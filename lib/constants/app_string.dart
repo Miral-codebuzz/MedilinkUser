@@ -74,4 +74,9 @@ class AppString {
   static const String logOut = "Logout";
   static const String saveChange = "Save Change";
   static const String cancel = "Cancel";
+  static const String logOutAccount = "Logout Account";
+  static const String areYouSureYouWantToLogoutThisAccount =
+      "Are you sure you want to logout \nthis account ?";
+  static const String relation = "Relation";
+  static const String appiontments = "Appiontments";
 }

@@ -5,6 +5,7 @@ import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/controller/bottom_bar_controller.dart';
 import 'package:doc_o_doctor/screens/booking_screen/booking_screen.dart';
 import 'package:doc_o_doctor/screens/home_screen/home_screen.dart';
+import 'package:doc_o_doctor/screens/login_screen/login_screen.dart';
 import 'package:doc_o_doctor/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ class BottomNavBar extends StatelessWidget {
     final BottomNavBarController controller = Get.put(BottomNavBarController());
     // Screens for each tab
     final List<Widget> screens = [
-      Center(child: HomeScreen()),
+      Center(child: LoginScreen()),
       Center(child: BookingScreen()),
       Center(child: SettingsScreen()),
     ];

@@ -14,4 +14,6 @@ class AppColor {
   static Color borderGrey = Color(0xff6B779A);
   static Color purpleColor = Color(0xff6C56F2);
   static Color listTileColor = Color(0xffFAFAFA);
+  static Color pink = Color(0xffCDC7F0);
+  // static Color listTileColor = Color(0xffFAFAFA);
 }

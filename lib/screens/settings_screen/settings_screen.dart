@@ -1,9 +1,12 @@
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
+import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
 import 'package:doc_o_doctor/screens/edit_profile_screen/edit_profile_screen.dart';
 import 'package:doc_o_doctor/screens/help_and_support_screen/help_and_support_screen.dart';
+import 'package:doc_o_doctor/screens/terms_and_condition_screen/terms_and_condition_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
+import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +32,10 @@ class SettingsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColor.purpleColor,
                   borderRadius: BorderRadius.circular(26),
+                  image: DecorationImage(
+                    image: AssetImage(AppImage.picImage),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
               SizedBox(height: 10),
@@ -55,7 +62,9 @@ class SettingsScreen extends StatelessWidget {
               CustomListStileWidget(
                 title: AppString.addFamilyMembers,
                 prefixIcon: AppImage.patientsIcon,
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => AddFamilyMemberScreen());
+                },
               ),
               CustomListStileWidget(
                 title: AppString.myBookings,
@@ -72,12 +81,21 @@ class SettingsScreen extends StatelessWidget {
               CustomListStileWidget(
                 title: AppString.termsAndCondition,
                 prefixIcon: AppImage.termsAndConditionIcon,
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => TermsAndConditionScreen());
+                },
               ),
               CustomListStileWidget(
                 title: AppString.logOut,
                 prefixIcon: AppImage.logOutIcon,
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return logOutModelBottomSheet();
+                    },
+                  );
+                },
                 showSufixIcon: false,
                 iconAndTextColor: AppColor.purpleColor,
               ),
@@ -146,4 +164,79 @@ class CustomListStileWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget logOutModelBottomSheet() {
+  return Container(
+    height: 258,
+    margin: EdgeInsets.all(5),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(8),
+        topRight: Radius.circular(8),
+      ),
+    ),
+    alignment: Alignment.center,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          height: 5.h,
+          width: 48.w,
+          decoration: BoxDecoration(
+            color: AppColor.grey,
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        SizedBox(height: 15),
+        Container(
+          height: 58.h,
+          width: 58.h,
+          decoration: BoxDecoration(
+            color: AppColor.pink,
+            borderRadius: BorderRadius.circular(11),
+            border: Border.all(color: AppColor.purpleColor),
+          ),
+          alignment: Alignment.center,
+          child: Image.asset(AppImage.logOutIcon, height: 44.h, width: 44.h),
+        ),
+        SizedBox(height: 10),
+        CustomText(
+          text: AppString.logOutAccount,
+          textColor: AppColor.primaryColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 22,
+        ),
+        SizedBox(height: 5),
+        CustomText(
+          text: AppString.areYouSureYouWantToLogoutThisAccount,
+          maxLine: 2,
+          textColor: AppColor.textGrey,
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+        ),
+        SizedBox(height: 5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            commonButton(
+              text: AppString.logOut,
+              onPressed: () {},
+              width: 126.w,
+            ),
+            SizedBox(width: 15),
+            commonButton(
+              text: AppString.cancel,
+              onPressed: () {},
+              width: 126.w,
+              bgColor: AppColor.lightGrey,
+              textColor: AppColor.textGrey,
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+      ],
+    ),
+  );
 }

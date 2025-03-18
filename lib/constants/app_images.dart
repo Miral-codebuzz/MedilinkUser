@@ -35,4 +35,5 @@ class AppImage {
   static const String logOutIcon = "$basePath/log_out_icon.png";
   static const String editIcon = "$basePath/edit_icon.png";
   static const String downIcon = "$basePath/down_arrow.png";
+  static const String clockIcon = "$basePath/clock_icon.png";
 }

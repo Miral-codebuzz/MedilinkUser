@@ -20,7 +20,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final EditProfileController controller = EditProfileController();
-  final TextEditingController dobController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +45,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: BoxDecoration(
                             color: AppColor.grey,
                             borderRadius: BorderRadius.circular(26),
+                            image: DecorationImage(
+                              image: AssetImage(AppImage.picImage),
+                              fit: BoxFit.fill,
+                            ),
                           ),
                         ),
                         Align(
@@ -95,30 +99,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
-                    controller: dobController,
+                    controller: controller.dobController,
                     label: AppString.dateOfBirth,
                     suffixIcon: AppImage.calender,
                     readOnly: true,
+                    onChanged: (p0) {
+                      controller.dob.value = p0;
+                    },
                     suffixIconOnTap: () {
-                      _selectDate(context);
+                      controller.selectDate(context);
                     },
                     validator: (value) {
-                      controller.dob.value.isEmpty
-                          ? "Date of Birth is required"
-                          : null;
+                      if (value == '') return "Date of Birth is required";
+                      return null;
                     },
                   ),
 
                   SizedBox(height: 10.h),
                   CustomTextField(
-                    controller: controller.problemController,
-                    label: AppString.writeYourProblemHere,
-                    onChanged: (p0) {
-                      controller.dob.value = p0;
-                    },
+                    controller: controller.streetAddress,
+                    label: AppString.streetAddress,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty)
-                        return "This field is required";
+                        return "Street Name is required";
+                      return null;
+                    },
+                  ),
+                  CustomTextField(
+                    controller: controller.cityController,
+                    label: AppString.city,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "City is required";
+                      return null;
+                    },
+                  ),
+                  CustomTextField(
+                    controller: controller.countryController,
+                    label: AppString.country,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "Country is required";
                       return null;
                     },
                   ),
@@ -134,9 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     text: AppString.cancel,
                     textColor: AppColor.black,
                     bgColor: AppColor.lightGrey,
-                    onPressed: () {
-                      controller.submitForm();
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -145,18 +164,5 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      dobController.text = DateFormat('dd/MM/yyyy').format(picked);
-      controller.dob.value = dobController.text;
-    }
   }
 }
