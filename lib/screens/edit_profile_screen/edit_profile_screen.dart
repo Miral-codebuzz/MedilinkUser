@@ -1,29 +1,22 @@
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
-import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/controller/edit_profile_controller.dart';
-import 'package:doc_o_doctor/screens/book_appointment_screen/book_appointment_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
-import 'package:doc_o_doctor/widgets/custom_text.dart';
+import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  final EditProfileController controller = EditProfileController();
-
-  @override
   Widget build(BuildContext context) {
+    final EditProfileController controller = EditProfileController();
     return Scaffold(
+      backgroundColor: AppColor.white,
       body: SafeArea(
         child: Form(
           key: controller.formKey,
@@ -125,6 +118,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(height: 10.h),
                   CustomTextField(
                     controller: controller.cityController,
                     label: AppString.city,
@@ -134,6 +128,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(height: 10.h),
                   CustomTextField(
                     controller: controller.countryController,
                     label: AppString.country,
@@ -155,7 +150,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     text: AppString.cancel,
                     textColor: AppColor.black,
                     bgColor: AppColor.lightGrey,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.back();
+                    },
                   ),
                 ],
               ),

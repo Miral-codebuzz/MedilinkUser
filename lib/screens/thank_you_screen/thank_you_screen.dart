@@ -1,7 +1,7 @@
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
-import 'package:doc_o_doctor/constants/text_style_decoration.dart';
+import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
@@ -9,7 +9,6 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 
 class ThankYouScreen extends StatelessWidget {
   const ThankYouScreen({super.key});
@@ -17,12 +16,14 @@ class ThankYouScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
+
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(20),
         child: commonButton(
           text: AppString.returnHome,
           onPressed: () {
-            Get.to(() {});
+            Get.to(() => BottomNavBar());
           },
         ),
       ),

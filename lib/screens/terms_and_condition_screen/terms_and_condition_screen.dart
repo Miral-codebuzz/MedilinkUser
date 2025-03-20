@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
@@ -12,6 +10,8 @@ class TermsAndConditionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

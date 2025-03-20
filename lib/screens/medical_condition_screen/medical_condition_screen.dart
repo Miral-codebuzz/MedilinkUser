@@ -2,9 +2,9 @@ import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
-import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
-import 'package:doc_o_doctor/widgets/common_textfield.dart';
+import 'package:doc_o_doctor/widgets/custom_text.dart';
+import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,102 +14,178 @@ import 'package:widgets_easier/widgets_easier.dart';
 import '../../controller/medical_condition_controller.dart';
 
 class MedicalConditionScreen extends StatelessWidget {
-  final MedicalConditionController controller = Get.put(
-    MedicalConditionController(),
-  );
-
-  MedicalConditionScreen({super.key});
+  const MedicalConditionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final MedicalConditionController controller = Get.put(
+      MedicalConditionController(),
+    );
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 70.h),
-                Image.asset(AppImage.logoBlue, height: 150.h, width: 150.w),
-                SizedBox(height: 30.h),
-                Text(
-                  AppString.medicalCondition,
-                  style: TextStyleDecoration.labelSmall.copyWith(
-                    fontSize: 20.sp,
-                    color: AppColor.black,
-                    fontWeight: FontWeight.w500,
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 70.h),
+                  Image.asset(AppImage.logoBlue, height: 150.h, width: 150.w),
+                  SizedBox(height: 30.h),
+                  Text(
+                    AppString.medicalCondition,
+                    style: TextStyleDecoration.labelSmall.copyWith(
+                      fontSize: 20.sp,
+                      color: AppColor.black,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  AppString.tellUsAboutYourMedicalConditions,
-                  textAlign: TextAlign.center,
-                  style: TextStyleDecoration.labelSmall.copyWith(
-                    fontSize: 14.sp,
-                    color: AppColor.grey,
-                    fontWeight: FontWeight.w400,
+                  SizedBox(height: 20.h),
+                  Text(
+                    AppString.tellUsAboutYourMedicalConditions,
+                    textAlign: TextAlign.center,
+                    style: TextStyleDecoration.labelSmall.copyWith(
+                      fontSize: 14.sp,
+                      color: AppColor.grey,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20.h),
-                insuranceTitleRow(
-                  title: "Have You Any Medical Insurance? ",
-                  subTitle: "Add",
-                  onTap: () {
-                    // controller.showMadicalInstsurance();
-                  },
-                ),
-                SizedBox(height: 5.h),
-                DottedLine(
-                  direction: Axis.horizontal,
-                  lineLength: double.infinity,
-                  lineThickness: 2,
-                  dashLength: 6.0,
-                  dashColor: AppColor.lightGrey,
-                ),
-                SizedBox(height: 10.h),
-                uploadInsurance(),
-                SizedBox(height: 10.h),
-                insuranceTitleRow(
-                  title: "Have You Any Past Medical Report ? ",
-                  subTitle: "Add",
-                  onTap: () {},
-                ),
-                SizedBox(height: 5.h),
-                DottedLine(
-                  direction: Axis.horizontal,
-                  lineLength: double.infinity,
-                  lineThickness: 2,
-                  dashLength: 6.0,
-                  dashColor: AppColor.lightGrey,
-                ),
-                SizedBox(height: 10.h),
-                uploadInsurance(),
-                SizedBox(height: 10.h),
-                CommonTextfield(
-                  hintText: 'Describe Your Medical Problem',
-                  maxLines: 5,
-                ),
-                SizedBox(height: 10.h),
-                commonButton(
-                  text: AppString.next,
-                  onPressed: () {
-                    Get.to(() => BottomNavBar());
-                  },
-                ),
-                SizedBox(height: 10.h),
-                Text(
-                  "Skip For Now ",
-                  style: TextStyleDecoration.labelSmall.copyWith(
-                    fontSize: 16.sp,
-                    color: AppColor.primaryColor,
-                    fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
+                  SizedBox(height: 20.h),
+
+                  //Have You Any Medical Insurance ?   Add
+                  Obx(
+                    () => insuranceTitleRow(
+                      title: AppString.haveYouAnyMedicalInsurance,
+                      subTitle:
+                          controller.isMedicalUploadVisible.value
+                              ? AppString.cancel
+                              : AppString.add,
+                      onTap: controller.toggleMedicalUpload,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10.h),
-              ],
+                  SizedBox(height: 5.h),
+                  DottedLine(
+                    direction: Axis.horizontal,
+                    lineLength: double.infinity,
+                    lineThickness: 2,
+                    dashLength: 6.0,
+                    dashColor: AppColor.lightGrey,
+                  ),
+                  SizedBox(height: 10.h),
+                  Obx(
+                    () => Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children:
+                          controller.medicalPdfs
+                              .map(
+                                (text) => customSelectedItem(
+                                  text: text,
+                                  onclose: () {
+                                    controller.removeMedicalPdf(text);
+                                  },
+                                ),
+                              )
+                              .toList(),
+                    ),
+                  ),
+                  Obx(
+                    () =>
+                        controller.isMedicalUploadVisible.value
+                            ? uploadInsurance(
+                              uploadOnTap: () {
+                                controller.pickMedicalPdfs();
+                              },
+                            )
+                            : SizedBox.shrink(),
+                  ),
+                  SizedBox(height: 10.h),
+
+                  // Have You Any Past Medical Report ?   Add
+                  Obx(
+                    () => insuranceTitleRow(
+                      title: AppString.haveYouAnyPastMedicalReport,
+                      subTitle:
+                          controller.isReportUploadVisible.value
+                              ? AppString.cancel
+                              : AppString.add,
+                      onTap: controller.toggleReportUpload,
+                    ),
+                  ),
+                  SizedBox(height: 5.h),
+                  DottedLine(
+                    direction: Axis.horizontal,
+                    lineLength: double.infinity,
+                    lineThickness: 2,
+                    dashLength: 6.0,
+                    dashColor: AppColor.lightGrey,
+                  ),
+                  SizedBox(height: 10.h),
+                  Obx(
+                    () => Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children:
+                          controller.reportPdfs
+                              .map(
+                                (text) => customSelectedItem(
+                                  text: text,
+                                  onclose: () {
+                                    controller.removeReportPdf(text);
+                                  },
+                                ),
+                              )
+                              .toList(),
+                    ),
+                  ),
+                  Obx(
+                    () =>
+                        controller.isReportUploadVisible.value
+                            ? uploadInsurance(
+                              uploadOnTap: () {
+                                controller.pickReportPdfs();
+                              },
+                            )
+                            : SizedBox.shrink(),
+                  ),
+                  SizedBox(height: 10.h),
+                  // CommonTextfield(
+                  //   hintText: 'Describe Your Medical Problem',
+                  //   maxLines: 5,
+                  // ),
+                  CustomTextField(
+                    controller: controller.medicalProblemController,
+                    label: AppString.describeYourMedicalProblem,
+                    maxLine: 5,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty)
+                        return "Please Describe Your Medical Problem";
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 10.h),
+                  commonButton(
+                    text: AppString.next,
+                    onPressed: () {
+                      controller.submitForm();
+                    },
+                  ),
+                  SizedBox(height: 10.h),
+                  Text(
+                    "Skip For Now ",
+                    style: TextStyleDecoration.labelSmall.copyWith(
+                      fontSize: 16.sp,
+                      color: AppColor.primaryColor,
+                      fontWeight: FontWeight.w500,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                ],
+              ),
             ),
           ),
         ),
@@ -117,7 +193,7 @@ class MedicalConditionScreen extends StatelessWidget {
     );
   }
 
-  uploadInsurance() {
+  uploadInsurance({required void Function()? uploadOnTap}) {
     return Container(
       // height: 150,
       // width: 300,
@@ -132,28 +208,31 @@ class MedicalConditionScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: AppColor.lightGrey, width: 1.5),
-              // color: Colors.grey.withOpacity(0.2),
+          InkWell(
+            onTap: uploadOnTap,
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: AppColor.lightGrey, width: 1.5),
+                // color: Colors.grey.withOpacity(0.2),
+              ),
+              child: Image.asset(AppImage.upload, width: 18.w),
+              /* child: Icon(
+                Icons.cloud_upload_outlined,
+                color: Colors.black54,
+                size: 24.sp,
+              ), */
             ),
-            child: Image.asset(AppImage.upload, width: 18.w),
-            /* child: Icon(
-              Icons.cloud_upload_outlined,
-              color: Colors.black54,
-              size: 24.sp,
-            ), */
           ),
           SizedBox(width: 10.w),
           GestureDetector(
-            onTap: () {},
+            onTap: uploadOnTap,
             child: RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: "Click to upload",
+                    text: AppString.clickToUpload,
                     style: TextStyleDecoration.labelSmall.copyWith(
                       color: AppColor.primaryColor,
                       fontSize: 14.sp,
@@ -161,7 +240,7 @@ class MedicalConditionScreen extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: " Insurance",
+                    text: AppString.insurance2,
                     style: TextStyleDecoration.labelSmall.copyWith(
                       color: AppColor.black,
                       fontSize: 14.sp,
@@ -207,4 +286,39 @@ class MedicalConditionScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget customSelectedItem({
+  required String text,
+  required void Function()? onclose,
+}) {
+  return IntrinsicWidth(
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.r),
+        color: AppColor.uploadDocColor,
+      ),
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        child: Row(
+          children: [
+            CustomText(
+              text: text,
+              textColor: AppColor.black,
+              fontSize: 12.sp,
+              maxLine: 1,
+              height: 1.2,
+              fontWeight: FontWeight.w400,
+            ),
+            SizedBox(width: 3),
+            GestureDetector(
+              onTap: onclose,
+              child: Icon(Icons.close, size: 15.w),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

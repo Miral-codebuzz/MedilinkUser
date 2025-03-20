@@ -79,4 +79,14 @@ class AppString {
       "Are you sure you want to logout \nthis account ?";
   static const String relation = "Relation";
   static const String appiontments = "Appiontments";
+  static const String describeYourMedicalProblem =
+      "Describe Your Medical Problem";
+  static const String clickToUpload = "Click to upload";
+  static const String insurance2 = " Insurance";
+  static const String haveYouAnyPastMedicalReport =
+      " Have You Any Past Medical Report ? ";
+  static const String add = " Add";
+  static const String haveYouAnyMedicalInsurance =
+      " Have You Any Medical Insurance? ";
+  // static const String insurance2 = " Insurance";
 }

@@ -18,7 +18,7 @@ class BookingScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              appBarWidget(title: AppString.appiontments),
+              appBarWidget(title: AppString.appiontments, showBackIcon: false),
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
@@ -30,7 +30,7 @@ class BookingScreen extends StatelessWidget {
                       image: AppImage.picImage,
                       name: 'Dr. Maria Watson',
                       expert: 'Cardio Specialist',
-                      date: 'Wednesday, 12 March',
+                      date: 'Wednesday, 12 March 2025',
                       time: '11:00 - AM',
                       onTap: () {},
                     );
@@ -117,32 +117,28 @@ class CustomAppoinmentContainer extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Image.asset(AppImage.calender, height: 15, width: 15),
-                      SizedBox(width: 8),
-                      CustomText(
-                        text: date,
-                        textColor: AppColor.textGrey,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        height: 1,
-                      ),
-                    ],
+                  Image.asset(AppImage.calender, height: 15, width: 15),
+                  SizedBox(width: 5),
+                  Expanded(
+                    child: CustomText(
+                      text: date,
+                      textColor: AppColor.textGrey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      textAlignment: TextAlign.left,
+                      height: 1,
+                    ),
                   ),
-                  Spacer(),
-                  Row(
-                    children: [
-                      Image.asset(AppImage.clockIcon, height: 15, width: 15),
-                      SizedBox(width: 8),
-                      CustomText(
-                        text: time,
-                        textColor: AppColor.textGrey,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        height: 1,
-                      ),
-                    ],
+                  SizedBox(width: 10),
+                  Image.asset(AppImage.clockIcon, height: 15, width: 15),
+                  SizedBox(width: 5),
+                  CustomText(
+                    text: time,
+                    textColor: AppColor.textGrey,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    textAlignment: TextAlign.left,
+                    height: 1,
                   ),
                 ],
               ),

@@ -2,21 +2,26 @@ import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
+import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
 import 'package:doc_o_doctor/screens/book_appointment_screen/book_appointment_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
+import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:doc_o_doctor/widgets/image_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 
 class DocDetailsScreen extends StatelessWidget {
   const DocDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
     return Scaffold(
+      backgroundColor: AppColor.white,
+
       bottomNavigationBar: Container(
         margin: EdgeInsets.all(20),
         height: 130,
@@ -36,7 +41,7 @@ class DocDetailsScreen extends StatelessWidget {
               bgColor: AppColor.lightGrey,
               textColor: AppColor.black,
               onPressed: () {
-                // Get.to();
+                Get.to(() => AddFamilyMemberScreen());
               },
             ),
           ],
@@ -121,16 +126,22 @@ class DocDetailsScreen extends StatelessWidget {
                   children: [
                     //Experience
                     detailsContainer(
+                      height: width * 0.27,
+                      width: width * 0.27,
                       iconImage: AppImage.experienceIcon,
                       title: AppString.experience,
                       subTitle: '10 Yrs',
                     ),
                     detailsContainer(
+                      height: width * 0.27,
+                      width: width * 0.27,
                       iconImage: AppImage.locationIcon,
                       title: AppString.location,
                       subTitle: 'California',
                     ),
                     detailsContainer(
+                      height: width * 0.27,
+                      width: width * 0.27,
                       iconImage: AppImage.patientsIcon,
                       title: AppString.patients,
                       subTitle: '1000 +',
@@ -192,23 +203,18 @@ Widget detailsContainer({
         children: [
           imageIconButton(image: iconImage, height: 18.h, width: 22.w),
           SizedBox(height: 10.h),
-          Text(
-            subTitle,
-            maxLines: 1,
-            style: TextStyleDecoration.labelLarge.copyWith(
-              color: AppColor.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
+          CustomText(
+            text: subTitle,
+            textColor: AppColor.black,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
           ),
           SizedBox(height: 5.h),
-          Text(
-            title,
-            style: TextStyleDecoration.labelLarge.copyWith(
-              color: AppColor.textGrey,
-              fontSize: 10.83,
-              fontWeight: FontWeight.w400,
-            ),
+          CustomText(
+            text: title,
+            fontSize: 10.83,
+            fontWeight: FontWeight.w400,
+            textColor: AppColor.textGrey.withValues(alpha: 0.5),
           ),
         ],
       ),

@@ -3,9 +3,9 @@ import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/controller/add_family_member_controller.dart';
-import 'package:doc_o_doctor/screens/book_appointment_screen/book_appointment_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
+import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,6 +20,7 @@ class AddFamilyMemberScreen extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: AppColor.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

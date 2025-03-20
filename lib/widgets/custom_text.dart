@@ -36,6 +36,7 @@ class CustomText extends StatelessWidget {
         fontWeight: fontWeight ?? FontWeight.w500,
         fontFamily: fontFamilty ?? '',
         height: height,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

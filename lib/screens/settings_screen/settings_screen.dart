@@ -11,7 +11,6 @@ import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -19,12 +18,13 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
-              appBarWidget(title: AppString.setting),
+              appBarWidget(title: AppString.setting, showBackIcon: false),
               SizedBox(height: 30),
               Container(
                 height: 90.h,

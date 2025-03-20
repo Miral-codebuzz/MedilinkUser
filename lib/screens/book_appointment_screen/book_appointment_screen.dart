@@ -1,10 +1,10 @@
 import 'package:doc_o_doctor/constants/app_color.dart';
-import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/controller/book_appointment_controller.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
+import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -18,6 +18,8 @@ class BookAppointmentScreen extends StatelessWidget {
       BookAppointmentController(),
     );
     return Scaffold(
+      backgroundColor: AppColor.white,
+
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(20),
         child: commonButton(
@@ -64,73 +66,20 @@ class BookAppointmentScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Obx(
-                        () => Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.selectedDate.value = index;
-                            },
-                            child: Container(
-                              width: 57,
-                              decoration: BoxDecoration(
-                                color:
-                                    controller.selectedDate.value == index
-                                        ? AppColor.primaryColor
-                                        : null,
-                                border: Border.all(
-                                  color: AppColor.borderGrey.withValues(
-                                    alpha: 0.1,
-                                  ),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(9.26),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 12,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      '13',
-                                      style: TextStyleDecoration.labelLarge
-                                          .copyWith(
-                                            color:
-                                                controller.selectedDate.value ==
-                                                        index
-                                                    ? AppColor.white
-                                                    : AppColor.textGrey
-                                                        .withValues(
-                                                          alpha: 0.60,
-                                                        ),
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                    Text(
-                                      'MON',
-                                      style: TextStyleDecoration.labelLarge
-                                          .copyWith(
-                                            color:
-                                                controller.selectedDate.value ==
-                                                        index
-                                                    ? AppColor.white
-                                                    : AppColor.textGrey
-                                                        .withValues(
-                                                          alpha: 0.60,
-                                                        ),
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                        () => BookinDateWidget(
+                          date: '13',
+                          day: 'Mon',
+                          bgColor:
+                              controller.selectedDate.value == index
+                                  ? AppColor.primaryColor
+                                  : AppColor.white,
+                          fontColor:
+                              controller.selectedDate.value == index
+                                  ? AppColor.white
+                                  : AppColor.textGrey.withValues(alpha: 0.60),
+                          onTap: () {
+                            controller.selectedDate.value = index;
+                          },
                         ),
                       );
                     },
@@ -258,7 +207,7 @@ class BookAppointmentScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: CustomTextField(
                           controller: controller.problemController,
-                          label: "Write  Your Problem Here ...",
+                          label: AppString.writeYourProblemHere,
                           maxLine: 10,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty)
@@ -287,6 +236,7 @@ class BookAppointmentScreen extends StatelessWidget {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 10),
                             CustomTextField(
                               controller: controller.ageController,
                               keyboardType: TextInputType.numberWithOptions(),
@@ -300,6 +250,7 @@ class BookAppointmentScreen extends StatelessWidget {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 10),
                             CustomTextField(
                               controller: controller.phoneController,
                               label: AppString.enterMobileNo,
@@ -333,6 +284,7 @@ class BookAppointmentScreen extends StatelessWidget {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 10),
                             CustomTextField(
                               label: AppString.gender,
                               isDropdown: true,
@@ -345,6 +297,7 @@ class BookAppointmentScreen extends StatelessWidget {
                                   (value) =>
                                       value == null ? "Select a Gender" : null,
                             ),
+                            SizedBox(height: 10),
                             CustomTextField(
                               controller: controller.problemController,
                               label: AppString.writeYourProblemHere,
@@ -369,188 +322,83 @@ class BookAppointmentScreen extends StatelessWidget {
   }
 }
 
-class CustomTextField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String label;
-  final TextInputType keyboardType;
-  final String? Function(String?)? validator;
-  final bool isDropdown;
-  final List<String>? dropdownItems;
-  final RxnString? selectedDropdown;
-  final void Function(String?)? onDropdownChanged;
-  final Widget? prefixIcon;
-  final int? maxLine;
-  final maxLength;
-  final String? suffixIcon;
-  final void Function()? suffixIconOnTap;
-  final bool readOnly;
-  final void Function(String)? onChanged;
-
-  const CustomTextField({
+class BookinDateWidget extends StatelessWidget {
+  final String date;
+  final String day;
+  final Color bgColor;
+  final Color fontColor;
+  final void Function()? onTap;
+  const BookinDateWidget({
     super.key,
-    this.controller,
-    required this.label,
-    this.keyboardType = TextInputType.text,
-    this.validator,
-    this.isDropdown = false,
-    this.dropdownItems,
-    this.selectedDropdown,
-    this.onDropdownChanged,
-    this.prefixIcon,
-    this.maxLine,
-    this.maxLength,
-    this.suffixIcon,
-    this.suffixIconOnTap,
-    this.readOnly = false,
-    this.onChanged,
+    required this.date,
+    required this.day,
+    required this.bgColor,
+    required this.fontColor,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 5),
-        isDropdown
-            ? Obx(
-              () => DropdownButtonFormField<String>(
-                value: selectedDropdown?.value,
-                style: TextStyleDecoration.labelMedium.copyWith(
-                  color: AppColor.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0),
+      child: GestureDetector(
+        onTap: onTap,
+        //  () {
+        // controller.selectedDate.value = index;
+        // },
+        child: Container(
+          width: 57,
+          decoration: BoxDecoration(
+            color: bgColor,
+            // controller.selectedDate.value == index
+            //     ? AppColor.primaryColor
+            //     : null,
+            border: Border.all(
+              color: AppColor.borderGrey.withValues(alpha: 0.1),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(9.26),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  date,
+                  style: TextStyleDecoration.labelLarge.copyWith(
+                    color: fontColor,
+                    // controller.selectedDate.value ==
+                    //         index
+                    //     ? AppColor.white
+                    //     : AppColor.textGrey
+                    //         .withValues(
+                    //           alpha: 0.60,
+                    //         ),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-
-                decoration: InputDecoration(
-                  fillColor: Colors.grey.shade100,
-                  hintText: label,
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColor.textFieldBorderColor,
-                      width: 1,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColor.textFieldBorderColor,
-                      width: 1,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColor.textFieldBorderColor,
-                      width: 1,
-                    ),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(
-                      color: AppColor.textFieldBorderColor,
-                      width: 1,
-                    ),
-                  ),
-                  hintStyle: TextStyleDecoration.labelSmall.copyWith(
-                    color: AppColor.grey,
-                    fontSize: 14.sp,
+                Text(
+                  day,
+                  style: TextStyleDecoration.labelLarge.copyWith(
+                    color: fontColor,
+                    // controller.selectedDate.value ==
+                    //         index
+                    //     ? AppColor.white
+                    //     : AppColor.textGrey
+                    //         .withValues(
+                    //           alpha: 0.60,
+                    //         ),
+                    fontSize: 10,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                items:
-                    dropdownItems?.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                onChanged: onDropdownChanged,
-                validator: validator,
-              ),
-            )
-            : TextFormField(
-              controller: controller,
-              keyboardType: keyboardType,
-              maxLines: maxLine,
-              validator: validator,
-              readOnly: readOnly,
-              maxLength: maxLength,
-              onChanged: onChanged,
-              style: TextStyleDecoration.labelMedium.copyWith(
-                color: AppColor.black,
-                fontWeight: FontWeight.w400,
-              ),
-              decoration: InputDecoration(
-                fillColor: Colors.grey.shade100,
-                hintText: label,
-                prefixIcon: prefixIcon,
-                suffixIcon:
-                    // isDropdown
-                    //     ? Icon(Icons.keyboard_arrow_down_outlined)
-                    //     : null,
-                    suffixIcon != null
-                        ? GestureDetector(
-                          onTap: suffixIconOnTap,
-                          child: Container(
-                            height: 12.h,
-                            width: 12.w,
-                            margin: EdgeInsets.all(15.w),
-                            // color: Colors.red,
-                            child: Image.asset(
-                              suffixIcon!,
-                              width: 12.w,
-                              height: 12.h,
-                            ),
-                          ),
-                        )
-                        : SizedBox.shrink(),
-
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                hintStyle: TextStyleDecoration.labelSmall.copyWith(
-                  color: AppColor.grey,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              ],
             ),
-      ],
+          ),
+        ),
+      ),
     );
   }
 }

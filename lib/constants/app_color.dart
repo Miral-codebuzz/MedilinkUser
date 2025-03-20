@@ -15,5 +15,7 @@ class AppColor {
   static Color purpleColor = Color(0xff6C56F2);
   static Color listTileColor = Color(0xffFAFAFA);
   static Color pink = Color(0xffCDC7F0);
+  static Color uploadDocColor = Color.fromRGBO(108, 86, 242, 0.2);
+
   // static Color listTileColor = Color(0xffFAFAFA);
 }
