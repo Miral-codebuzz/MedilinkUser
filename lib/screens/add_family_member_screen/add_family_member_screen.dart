@@ -40,7 +40,6 @@ class AddFamilyMemberScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-
                   SizedBox(height: 10.h),
                   CustomTextField(
                     controller: controller.phoneController,
@@ -50,7 +49,6 @@ class AddFamilyMemberScreen extends StatelessWidget {
                     prefixIcon: Container(
                       width: 50.w,
                       margin: EdgeInsets.only(left: 8),
-
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -83,10 +81,9 @@ class AddFamilyMemberScreen extends StatelessWidget {
                     onDropdownChanged: (String? value) {
                       controller.selectedGender.value = value!;
                     },
-                    validator:
-                        (value) => value == null ? "Select a Gender" : null,
+                    validator: (value) =>
+                        value == null ? "Select a Gender" : null,
                   ),
-
                   SizedBox(height: 10),
                   CustomTextField(
                     controller: controller.dobController,
@@ -116,7 +113,7 @@ class AddFamilyMemberScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   commonButton(
-                    text: AppString.submit,
+                    text: AppString.saveMember,
                     onPressed: () {
                       controller.submitForm();
                     },

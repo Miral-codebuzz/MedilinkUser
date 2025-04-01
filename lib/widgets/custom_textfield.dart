@@ -49,18 +49,103 @@ class CustomTextField extends StatelessWidget {
         const SizedBox(height: 5),
         isDropdown
             ? Obx(
-              () => DropdownButtonFormField2<String>(
-                value: selectedDropdown?.value,
+                () => DropdownButtonFormField2<String>(
+                  value: selectedDropdown?.value,
+                  style: TextStyleDecoration.labelMedium.copyWith(
+                    color: AppColor.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                  ),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    hintText: label,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: AppColor.textFieldBorderColor,
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: AppColor.textFieldBorderColor,
+                        width: 1,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: AppColor.textFieldBorderColor,
+                        width: 1,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: AppColor.textFieldBorderColor,
+                        width: 1,
+                      ),
+                    ),
+                    hintStyle: TextStyleDecoration.labelSmall.copyWith(
+                      color: AppColor.grey,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  items: dropdownItems?.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: onDropdownChanged,
+                  validator: validator,
+                ),
+              )
+            : TextFormField(
+                controller: controller,
+                keyboardType: keyboardType,
+                maxLines: maxLine,
+                validator: validator,
+                readOnly: readOnly,
+                maxLength: maxLength,
+                onChanged: onChanged,
                 style: TextStyleDecoration.labelMedium.copyWith(
                   color: AppColor.black,
                   fontWeight: FontWeight.w400,
-                  fontSize: 14,
                 ),
-
                 decoration: InputDecoration(
+                  filled: true,
                   fillColor: Colors.grey.shade100,
+                  //  fillColor: Color.fromRGBO(232, 236, 244, 1),
                   hintText: label,
-
+                  prefixIcon: prefixIcon,
+                  suffixIcon:
+                      // isDropdown
+                      //     ? Icon(Icons.keyboard_arrow_down_outlined)
+                      //     : null,
+                      suffixIcon != null
+                          ? GestureDetector(
+                              onTap: suffixIconOnTap,
+                              child: Container(
+                                height: 12.h,
+                                width: 12.w,
+                                margin: EdgeInsets.all(15.w),
+                                // color: Colors.red,
+                                child: Image.asset(
+                                  suffixIcon!,
+                                  width: 12.w,
+                                  height: 12.h,
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink(),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -99,95 +184,7 @@ class CustomTextField extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                items:
-                    dropdownItems?.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                onChanged: onDropdownChanged,
-                validator: validator,
               ),
-            )
-            : TextFormField(
-              controller: controller,
-              keyboardType: keyboardType,
-              maxLines: maxLine,
-              validator: validator,
-              readOnly: readOnly,
-              maxLength: maxLength,
-              onChanged: onChanged,
-
-              style: TextStyleDecoration.labelMedium.copyWith(
-                color: AppColor.black,
-                fontWeight: FontWeight.w400,
-              ),
-
-              decoration: InputDecoration(
-                fillColor: Colors.grey.shade100,
-                hintText: label,
-                prefixIcon: prefixIcon,
-                suffixIcon:
-                    // isDropdown
-                    //     ? Icon(Icons.keyboard_arrow_down_outlined)
-                    //     : null,
-                    suffixIcon != null
-                        ? GestureDetector(
-                          onTap: suffixIconOnTap,
-                          child: Container(
-                            height: 12.h,
-                            width: 12.w,
-                            margin: EdgeInsets.all(15.w),
-                            // color: Colors.red,
-                            child: Image.asset(
-                              suffixIcon!,
-                              width: 12.w,
-                              height: 12.h,
-                            ),
-                          ),
-                        )
-                        : SizedBox.shrink(),
-
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColor.textFieldBorderColor,
-                    width: 1,
-                  ),
-                ),
-                hintStyle: TextStyleDecoration.labelSmall.copyWith(
-                  color: AppColor.grey,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
       ],
     );
   }

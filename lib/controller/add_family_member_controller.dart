@@ -33,7 +33,9 @@ class AddFamilyMemberController extends GetxController {
   final List<String> genderOptions = ['Male', 'Female', 'Other'];
 
   void submitForm() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      Get.back();
+    }
   }
 
   Future<void> selectDate(BuildContext context) async {

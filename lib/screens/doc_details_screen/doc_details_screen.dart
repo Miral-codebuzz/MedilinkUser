@@ -21,10 +21,9 @@ class DocDetailsScreen extends StatelessWidget {
     final width = size.width;
     return Scaffold(
       backgroundColor: AppColor.white,
-
       bottomNavigationBar: Container(
-        margin: EdgeInsets.all(20),
-        height: 130,
+        margin: EdgeInsets.all(10),
+        height: 115,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

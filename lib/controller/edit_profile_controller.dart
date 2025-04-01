@@ -24,7 +24,9 @@ class EditProfileController extends GetxController {
   final List<String> genderOptions = ['Male', 'Female', 'Other'];
 
   void submitForm() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      Get.back();
+    }
   }
 
   @override

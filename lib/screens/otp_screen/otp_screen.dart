@@ -11,7 +11,8 @@ import 'package:get/get.dart';
 
 class OtpScreen extends StatelessWidget {
   final String mobileNo;
-  OtpScreen({super.key, required this.mobileNo});
+  final String countryCode;
+  OtpScreen({super.key, required this.mobileNo, required this.countryCode});
   final OtpController controller = Get.put(OtpController());
 
   @override
@@ -45,7 +46,7 @@ class OtpScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                "${mobileNo.isNotEmpty ? mobileNo : ''} ${AppString.mobileNo}",
+                "${countryCode.isNotEmpty ? countryCode : ''} ${mobileNo.isNotEmpty ? mobileNo : ''} ${AppString.mobileNo}",
                 textAlign: TextAlign.center,
                 style: TextStyleDecoration.labelSmall.copyWith(
                   fontSize: 14.sp,
@@ -150,37 +151,37 @@ class OtpScreen extends StatelessWidget {
                     "${(seconds ~/ 60)}:${(seconds % 60).toString().padLeft(2, '0')}";
                 return (controller.resendTime.value > 0)
                     ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppString.otpResendIn,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            AppString.otpResendIn,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: AppColor.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            formattedTime,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: AppColor.primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      )
+                    : TextButton(
+                        onPressed: controller.startResendTimer,
+                        child: Text(
+                          AppString.resentOtp,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColor.black,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Text(
-                          formattedTime,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColor.primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    )
-                    : TextButton(
-                      onPressed: controller.startResendTimer,
-                      child: Text(
-                        AppString.resentOtp,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    );
+                      );
               }),
               SizedBox(height: 30.h),
               commonButton(

@@ -2,8 +2,10 @@ import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
+import 'package:doc_o_doctor/screens/booking_screen/booking_screen.dart';
 import 'package:doc_o_doctor/screens/edit_profile_screen/edit_profile_screen.dart';
 import 'package:doc_o_doctor/screens/help_and_support_screen/help_and_support_screen.dart';
+import 'package:doc_o_doctor/screens/login_screen/login_screen.dart';
 import 'package:doc_o_doctor/screens/terms_and_condition_screen/terms_and_condition_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
@@ -69,7 +71,11 @@ class SettingsScreen extends StatelessWidget {
               CustomListStileWidget(
                 title: AppString.myBookings,
                 prefixIcon: AppImage.bookingIcon,
-                onTap: () {},
+                onTap: () {
+                  Get.to(() => BookingScreen(
+                        isShowBackIcon: true,
+                      ));
+                },
               ),
               CustomListStileWidget(
                 title: AppString.helpAndSupport,
@@ -222,13 +228,17 @@ Widget logOutModelBottomSheet() {
           children: [
             commonButton(
               text: AppString.logOut,
-              onPressed: () {},
+              onPressed: () {
+                Get.offAll(LoginScreen());
+              },
               width: 126.w,
             ),
             SizedBox(width: 15),
             commonButton(
               text: AppString.cancel,
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+              },
               width: 126.w,
               bgColor: AppColor.lightGrey,
               textColor: AppColor.textGrey,

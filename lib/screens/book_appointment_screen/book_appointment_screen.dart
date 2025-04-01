@@ -1,25 +1,28 @@
+import 'dart:developer';
+
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/controller/book_appointment_controller.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
+import 'package:doc_o_doctor/widgets/common_textfield.dart';
+import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BookAppointmentScreen extends StatelessWidget {
-  const BookAppointmentScreen({super.key});
+  BookAppointmentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final BookAppointmentController controller = Get.put(
-      BookAppointmentController(),
-    );
+    final BookAppointmentController controller =
+        Get.put(BookAppointmentController());
     return Scaffold(
       backgroundColor: AppColor.white,
-
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(20),
         child: commonButton(
@@ -41,52 +44,117 @@ class BookAppointmentScreen extends StatelessWidget {
                   padding: EdgeInsets.all(20),
                   child: appBarWidget(title: AppString.bookAppointment),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 10.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Row(
-                    children: [
-                      //select date
-                      Text(
-                        'July, 2020',
-                        style: TextStyleDecoration.labelLarge.copyWith(
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w500,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.pickMonthYear(context);
+                    },
+                    child: Row(
+                      children: [
+                        Obx(
+                          () => Text(
+                            DateFormat.yMMMM()
+                                .format(controller.selectedDate.value),
+                            style: TextStyleDecoration.labelLarge.copyWith(
+                              color: AppColor.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
-                      ),
-                      Icon(Icons.keyboard_arrow_down_outlined),
-                    ],
+                        Icon(Icons.keyboard_arrow_down_outlined),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 10.h),
                 SizedBox(
                   height: 65.h,
-                  child: ListView.builder(
-                    itemCount: 20,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Obx(
-                        () => BookinDateWidget(
-                          date: '13',
-                          day: 'Mon',
-                          bgColor:
-                              controller.selectedDate.value == index
-                                  ? AppColor.primaryColor
-                                  : AppColor.white,
-                          fontColor:
-                              controller.selectedDate.value == index
-                                  ? AppColor.white
-                                  : AppColor.textGrey.withValues(alpha: 0.60),
-                          onTap: () {
-                            controller.selectedDate.value = index;
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                  child: Obx(() {
+                    int daysInMonth = DateTime(
+                      controller.selectedDate.value.year,
+                      controller.selectedDate.value.month + 1,
+                      0,
+                    ).day;
+
+                    return ListView.builder(
+                      controller: controller.scrollController,
+                      itemCount: daysInMonth,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        int day = index + 1;
+                        DateTime date = DateTime(
+                          controller.selectedDate.value.year,
+                          controller.selectedDate.value.month,
+                          day,
+                        );
+                        bool isSelected = day == controller.selectedDay.value;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0.w),
+                          child: GestureDetector(
+                            onTap: () {
+                              controller.selectedDay.value = day;
+                              controller.selectedDay.refresh();
+                              controller.selectedDate.refresh();
+                              controller.scrollToSelectedDate();
+                            },
+                            child: Container(
+                              width: 57,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColor.primaryColor
+                                    : AppColor.white,
+                                border: Border.all(
+                                  color: AppColor.borderGrey
+                                      .withValues(alpha: 0.1),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(9.26),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 12),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      DateFormat.E().format(date).toUpperCase(),
+                                      style: TextStyleDecoration.labelLarge
+                                          .copyWith(
+                                        color: isSelected
+                                            ? AppColor.white
+                                            : AppColor.textGrey
+                                                .withOpacity(0.6),
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      DateFormat.d().format(date),
+                                      style: TextStyleDecoration.labelLarge
+                                          .copyWith(
+                                        color: isSelected
+                                            ? AppColor.white
+                                            : AppColor.textGrey
+                                                .withOpacity(0.6),
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
                 ),
                 SizedBox(height: 20.h),
-                //available time
+
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Text(
@@ -115,16 +183,16 @@ class BookAppointmentScreen extends StatelessWidget {
                         () => GestureDetector(
                           onTap: () {
                             controller.selectedTime.value = index;
+                            controller.selectedTime.refresh();
                           },
                           child: Container(
                             height: 28.88,
                             width: 72.19,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color:
-                                  controller.selectedTime.value == index
-                                      ? AppColor.primaryColor
-                                      : null,
+                              color: controller.selectedTime.value == index
+                                  ? AppColor.primaryColor
+                                  : null,
                               border: Border.all(
                                 color: AppColor.borderGrey.withValues(
                                   alpha: 0.1,
@@ -134,14 +202,13 @@ class BookAppointmentScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              '09:00 AM',
+                              avilableTime[index],
                               style: TextStyleDecoration.labelLarge.copyWith(
-                                color:
-                                    controller.selectedTime.value == index
-                                        ? AppColor.white
-                                        : AppColor.textGrey.withValues(
-                                          alpha: 0.60,
-                                        ),
+                                color: controller.selectedTime.value == index
+                                    ? AppColor.white
+                                    : AppColor.textGrey.withValues(
+                                        alpha: 0.60,
+                                      ),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -152,14 +219,28 @@ class BookAppointmentScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(height: 20.h),
+                Obx(() => controller.selectedTime.value == -1
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5.h, horizontal: 20.w),
+                        child: CustomText(
+                          text: controller.errorText.value,
+                          textColor: AppColor.red,
+                          fontSize: 10.sp,
+                        ),
+                      )
+                    : SizedBox()),
+
+                SizedBox(
+                  height: 20.h,
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: GestureDetector(
                     onTapDown: (TapDownDetails details) async {
-                      final RenderBox overlay =
-                          Overlay.of(context).context.findRenderObject()
-                              as RenderBox;
+                      final RenderBox overlay = Overlay.of(context)
+                          .context
+                          .findRenderObject() as RenderBox;
                       final Offset position = details.globalPosition;
 
                       final result = await showMenu(
@@ -170,13 +251,12 @@ class BookAppointmentScreen extends StatelessWidget {
                           overlay.size.width - position.dx,
                           overlay.size.height - position.dy,
                         ),
-                        items:
-                            controller.options.map((String value) {
-                              return PopupMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
+                        items: controller.options.map((String value) {
+                          return PopupMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
                       );
 
                       if (result != null) {
@@ -185,7 +265,6 @@ class BookAppointmentScreen extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        //select Patient
                         Obx(
                           () => Text(
                             controller.selectedValue.value,
@@ -200,22 +279,23 @@ class BookAppointmentScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 20.h),
                 Obx(() {
                   return controller.selectedValue.value == AppString.forSelf
                       ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: CustomTextField(
-                          controller: controller.problemController,
-                          label: AppString.writeYourProblemHere,
-                          maxLine: 10,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty)
-                              return "This field is required";
-                            return null;
-                          },
-                        ),
-                      )
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomTextField(
+                            controller: controller.problemController,
+                            label: AppString.writeYourProblemHere,
+                            maxLine: 10,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty)
+                                return "This field is required";
+                              return null;
+                            },
+                          ),
+                        )
                       : SizedBox();
                 }),
                 Obx(() {
@@ -224,93 +304,102 @@ class BookAppointmentScreen extends StatelessWidget {
                           controller.selectedValue.value ==
                               AppString.forOtherPerson
                       ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          children: [
-                            CustomTextField(
-                              controller: controller.nameController,
-                              label: AppString.name,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty)
-                                  return "Name is required";
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            CustomTextField(
-                              controller: controller.ageController,
-                              keyboardType: TextInputType.numberWithOptions(),
-                              label: AppString.age,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty)
-                                  return "Age is required";
-                                int? age = int.tryParse(value);
-                                if (age == null || age < 1 || age > 120)
-                                  return "Enter a valid age (1-120)";
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            CustomTextField(
-                              controller: controller.phoneController,
-                              label: AppString.enterMobileNo,
-                              keyboardType: TextInputType.phone,
-                              maxLength: 10,
-                              prefixIcon: Container(
-                                width: 50.w,
-                                margin: EdgeInsets.only(left: 8),
-
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "+91",
-                                      style: TextStyleDecoration.labelMedium
-                                          .copyWith(
-                                            color: AppColor.black,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Icon(Icons.keyboard_arrow_down_outlined),
-                                  ],
-                                ),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              CustomTextField(
+                                controller: controller.nameController,
+                                label: AppString.name,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty)
+                                    return "Name is required";
+                                  return null;
+                                },
                               ),
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty)
-                                  return "Phone is required";
-                                if (!RegExp(r'^[0-9]{10}$').hasMatch(value))
-                                  return "Enter a valid 10-digit phone number";
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 10),
-                            CustomTextField(
-                              label: AppString.gender,
-                              isDropdown: true,
-                              dropdownItems: controller.genderOptions,
-                              selectedDropdown: controller.selectedGender,
-                              onDropdownChanged: (String? value) {
-                                controller.selectedGender.value = value!;
-                              },
-                              validator:
-                                  (value) =>
-                                      value == null ? "Select a Gender" : null,
-                            ),
-                            SizedBox(height: 10),
-                            CustomTextField(
-                              controller: controller.problemController,
-                              label: AppString.writeYourProblemHere,
-                              maxLine: 10,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty)
-                                  return "This field is required";
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      )
+                              SizedBox(height: 10),
+                              CustomTextField(
+                                controller: controller.ageController,
+                                keyboardType: TextInputType.numberWithOptions(),
+                                label: AppString.age,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty)
+                                    return "Age is required";
+                                  int? age = int.tryParse(value);
+                                  if (age == null || age < 1 || age > 120)
+                                    return "Enter a valid age (1-120)";
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 10),
+                              commonPhoneField(
+                                controller: controller.phoneController,
+                                onChanged: (phone) {
+                                  log('Number: ${phone.countryCode}');
+                                },
+                                validator: (value) {
+                                  if (value == null) return "Phone is required";
+
+                                  return null;
+                                },
+                              ),
+                              /* CustomTextField(
+                                controller: controller.phoneController,
+                                label: AppString.enterMobileNo,
+                                keyboardType: TextInputType.phone,
+                                maxLength: 10,
+                                prefixIcon: Container(
+                                  width: 50.w,
+                                  margin: EdgeInsets.only(left: 8),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "+91",
+                                        style: TextStyleDecoration.labelMedium
+                                            .copyWith(
+                                          color: AppColor.black,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Icon(Icons.keyboard_arrow_down_outlined),
+                                    ],
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty)
+                                    return "Phone is required";
+                                  if (!RegExp(r'^[0-9]{10}$').hasMatch(value))
+                                    return "Enter a valid 10-digit phone number";
+                                  return null;
+                                },
+                              ), */
+                              SizedBox(height: 10),
+                              CustomTextField(
+                                label: AppString.gender,
+                                isDropdown: true,
+                                dropdownItems: controller.genderOptions,
+                                selectedDropdown: controller.selectedGender,
+                                onDropdownChanged: (String? value) {
+                                  controller.selectedGender.value = value!;
+                                },
+                                validator: (value) =>
+                                    value == null ? "Select a Gender" : null,
+                              ),
+                              SizedBox(height: 10),
+                              CustomTextField(
+                                controller: controller.problemController,
+                                label: AppString.writeYourProblemHere,
+                                maxLine: 10,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty)
+                                    return "This field is required";
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
+                        )
                       : SizedBox();
                 }),
               ],
@@ -320,6 +409,17 @@ class BookAppointmentScreen extends StatelessWidget {
       ),
     );
   }
+
+  List avilableTime = [
+    "09:00 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "02:00 PM",
+    "03:00 PM",
+    "04:00 PM",
+    "05:00 PM",
+  ];
 }
 
 class BookinDateWidget extends StatelessWidget {
@@ -343,16 +443,10 @@ class BookinDateWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10.0),
       child: GestureDetector(
         onTap: onTap,
-        //  () {
-        // controller.selectedDate.value = index;
-        // },
         child: Container(
           width: 57,
           decoration: BoxDecoration(
             color: bgColor,
-            // controller.selectedDate.value == index
-            //     ? AppColor.primaryColor
-            //     : null,
             border: Border.all(
               color: AppColor.borderGrey.withValues(alpha: 0.1),
               width: 1,
@@ -368,13 +462,6 @@ class BookinDateWidget extends StatelessWidget {
                   date,
                   style: TextStyleDecoration.labelLarge.copyWith(
                     color: fontColor,
-                    // controller.selectedDate.value ==
-                    //         index
-                    //     ? AppColor.white
-                    //     : AppColor.textGrey
-                    //         .withValues(
-                    //           alpha: 0.60,
-                    //         ),
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                   ),
@@ -383,13 +470,6 @@ class BookinDateWidget extends StatelessWidget {
                   day,
                   style: TextStyleDecoration.labelLarge.copyWith(
                     color: fontColor,
-                    // controller.selectedDate.value ==
-                    //         index
-                    //     ? AppColor.white
-                    //     : AppColor.textGrey
-                    //         .withValues(
-                    //           alpha: 0.60,
-                    //         ),
                     fontSize: 10,
                     fontWeight: FontWeight.w400,
                   ),

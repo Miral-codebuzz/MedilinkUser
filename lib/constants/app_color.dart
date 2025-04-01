@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColor {
   static Color primaryColor = Color(0xff6C56F2);
   static Color white = Colors.white;
+  static Color red = Colors.red;
   static Color black = Colors.black;
   static Color grey = Color(0xffBDBDBD);
   static Color textFieldBorderColor = Color(0xffE8ECF4);

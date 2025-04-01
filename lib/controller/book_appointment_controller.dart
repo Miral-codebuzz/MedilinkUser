@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BookAppointmentController extends GetxController {
-  var selectedDate = (-1).obs;
+  // var selectedDate = (-1).obs;
   var selectedTime = (-1).obs;
   RxString selectedValue = AppString.selectpatient.obs;
   final formKey = GlobalKey<FormState>();
@@ -16,13 +16,25 @@ class BookAppointmentController extends GetxController {
   final RxnString selectedGender = RxnString();
   final List<String> genderOptions = ['Male', 'Female', 'Other'];
 
+  Rx<DateTime> selectedDate = DateTime.now().obs;
+  RxInt selectedDay = DateTime.now().day.obs;
+  ScrollController scrollController = ScrollController();
+  RxString errorText = "".obs;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    scrollToSelectedDate();
+    super.onInit();
+  }
+
   @override
   void dispose() {
     nameController.clear();
     ageController.clear();
     phoneController.clear();
     problemController.clear();
-    selectedDate.value = -1;
+    selectedDate.value = DateTime.now();
     selectedTime.value = -1;
     super.dispose();
   }
@@ -38,26 +50,66 @@ class BookAppointmentController extends GetxController {
     selectedValue.value = value;
   }
 
-  void submitForm() {
-    if (selectedTime.value == -1 || selectedDate.value == -1) {
-      Get.snackbar(
-        "Date And Time",
-        "Please select a Date and Time",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: AppColor.lightPinkColor,
-        colorText: Colors.black,
-        margin: EdgeInsets.all(10),
-        duration: Duration(seconds: 2),
-      );
-      return; // Stop execution if time is not selected
+  void pickMonthYear(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate.value,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: Colors.purple,
+            colorScheme: ColorScheme.light(primary: Colors.purple),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      selectedDate.value = picked;
+
+      // Ensure the selected day is valid in the new month
+      int daysInNewMonth = DateTime(picked.year, picked.month + 1, 0).day;
+      if (selectedDay.value > daysInNewMonth) {
+        selectedDay.value = 1;
+      } else {
+        selectedDay.value = picked.day;
+      }
+
+      selectedDate.refresh();
+      selectedDay.refresh();
+      scrollToSelectedDate();
     }
-    if (formKey.currentState!.validate()) {
+  }
+
+  void scrollToSelectedDate() {
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (scrollController.hasClients) {
+        double position = (selectedDay.value - 1) * 67.0;
+        scrollController.animateTo(
+          position,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  void submitForm() {
+    if (selectedDate.value == DateTime(0)) {
+      errorText.value = "Select a date";
+    } else if (selectedTime.value == -1) {
+      errorText.value = "Select a avilable time";
+    } else if (formKey.currentState!.validate()) {
       Get.to(() => ThankYouScreen());
       nameController.clear();
       ageController.clear();
       phoneController.clear();
       problemController.clear();
-      selectedDate.value = -1;
+      selectedDate.value = DateTime.now();
       selectedTime.value = -1;
     }
   }

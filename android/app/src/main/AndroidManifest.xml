@@ -4,7 +4,7 @@
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
     android:maxSdkVersion="29"/>
     <application
-        android:label="doc_o_doctor"
+        android:label="User"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

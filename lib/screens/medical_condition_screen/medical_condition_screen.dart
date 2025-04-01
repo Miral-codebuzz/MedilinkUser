@@ -2,6 +2,8 @@ import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
+import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:doc_o_doctor/screens/home_screen/home_screen.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
@@ -59,10 +61,9 @@ class MedicalConditionScreen extends StatelessWidget {
                   Obx(
                     () => insuranceTitleRow(
                       title: AppString.haveYouAnyMedicalInsurance,
-                      subTitle:
-                          controller.isMedicalUploadVisible.value
-                              ? AppString.cancel
-                              : AppString.add,
+                      subTitle: controller.isMedicalUploadVisible.value
+                          ? AppString.cancel
+                          : AppString.add,
                       onTap: controller.toggleMedicalUpload,
                     ),
                   ),
@@ -79,28 +80,26 @@ class MedicalConditionScreen extends StatelessWidget {
                     () => Wrap(
                       spacing: 8.0,
                       runSpacing: 8.0,
-                      children:
-                          controller.medicalPdfs
-                              .map(
-                                (text) => customSelectedItem(
-                                  text: text,
-                                  onclose: () {
-                                    controller.removeMedicalPdf(text);
-                                  },
-                                ),
-                              )
-                              .toList(),
+                      children: controller.medicalPdfs
+                          .map(
+                            (text) => customSelectedItem(
+                              text: text,
+                              onclose: () {
+                                controller.removeMedicalPdf(text);
+                              },
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                   Obx(
-                    () =>
-                        controller.isMedicalUploadVisible.value
-                            ? uploadInsurance(
-                              uploadOnTap: () {
-                                controller.pickMedicalPdfs();
-                              },
-                            )
-                            : SizedBox.shrink(),
+                    () => controller.isMedicalUploadVisible.value
+                        ? uploadInsurance(
+                            uploadOnTap: () {
+                              controller.pickMedicalPdfs();
+                            },
+                          )
+                        : SizedBox.shrink(),
                   ),
                   SizedBox(height: 10.h),
 
@@ -108,10 +107,9 @@ class MedicalConditionScreen extends StatelessWidget {
                   Obx(
                     () => insuranceTitleRow(
                       title: AppString.haveYouAnyPastMedicalReport,
-                      subTitle:
-                          controller.isReportUploadVisible.value
-                              ? AppString.cancel
-                              : AppString.add,
+                      subTitle: controller.isReportUploadVisible.value
+                          ? AppString.cancel
+                          : AppString.add,
                       onTap: controller.toggleReportUpload,
                     ),
                   ),
@@ -128,28 +126,26 @@ class MedicalConditionScreen extends StatelessWidget {
                     () => Wrap(
                       spacing: 8.0,
                       runSpacing: 8.0,
-                      children:
-                          controller.reportPdfs
-                              .map(
-                                (text) => customSelectedItem(
-                                  text: text,
-                                  onclose: () {
-                                    controller.removeReportPdf(text);
-                                  },
-                                ),
-                              )
-                              .toList(),
+                      children: controller.reportPdfs
+                          .map(
+                            (text) => customSelectedItem(
+                              text: text,
+                              onclose: () {
+                                controller.removeReportPdf(text);
+                              },
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                   Obx(
-                    () =>
-                        controller.isReportUploadVisible.value
-                            ? uploadInsurance(
-                              uploadOnTap: () {
-                                controller.pickReportPdfs();
-                              },
-                            )
-                            : SizedBox.shrink(),
+                    () => controller.isReportUploadVisible.value
+                        ? uploadInsurance(
+                            uploadOnTap: () {
+                              controller.pickReportPdfs();
+                            },
+                          )
+                        : SizedBox.shrink(),
                   ),
                   SizedBox(height: 10.h),
                   // CommonTextfield(
@@ -174,13 +170,18 @@ class MedicalConditionScreen extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 10.h),
-                  Text(
-                    "Skip For Now ",
-                    style: TextStyleDecoration.labelSmall.copyWith(
-                      fontSize: 16.sp,
-                      color: AppColor.primaryColor,
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline,
+                  GestureDetector(
+                    onTap: () {
+                      Get.offAll(BottomNavBar());
+                    },
+                    child: Text(
+                      "Skip For Now ",
+                      style: TextStyleDecoration.labelSmall.copyWith(
+                        fontSize: 16.sp,
+                        color: AppColor.primaryColor,
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                   SizedBox(height: 20.h),

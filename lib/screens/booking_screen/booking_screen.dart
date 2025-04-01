@@ -1,12 +1,17 @@
+import 'dart:isolate';
+
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
+import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BookingScreen extends StatelessWidget {
-  const BookingScreen({super.key});
+  final bool isShowBackIcon;
+  const BookingScreen({super.key, this.isShowBackIcon = false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,8 @@ class BookingScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              appBarWidget(title: AppString.appiontments, showBackIcon: false),
+              appBarWidget(
+                  title: AppString.appiontments, showBackIcon: isShowBackIcon),
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
@@ -32,7 +38,7 @@ class BookingScreen extends StatelessWidget {
                       expert: 'Cardio Specialist',
                       date: 'Wednesday, 12 March 2025',
                       time: '11:00 - AM',
-                      onTap: () {},
+                      onTap: () => Get.to(() => DocDetailsScreen()),
                     );
                   },
                 ),

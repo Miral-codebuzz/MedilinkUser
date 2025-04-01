@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
@@ -7,6 +9,7 @@ import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class HelpAndSupportScreen extends StatelessWidget {
   const HelpAndSupportScreen({super.key});
@@ -17,7 +20,6 @@ class HelpAndSupportScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColor.white,
-
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -37,7 +39,7 @@ class HelpAndSupportScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10.h),
+                  /* SizedBox(height: 10.h),
                   CustomTextField(
                     controller: controller.ageController,
                     keyboardType: TextInputType.numberWithOptions(),
@@ -50,9 +52,87 @@ class HelpAndSupportScreen extends StatelessWidget {
                         return "Enter a valid age (1-120)";
                       return null;
                     },
-                  ),
+                  ), */
                   SizedBox(height: 10.h),
-                  CustomTextField(
+                  IntlPhoneField(
+                    controller: controller.phoneController,
+                    showDropdownIcon: true,
+                    flagsButtonMargin: EdgeInsets.only(left: 10.w),
+                    dropdownIconPosition: IconPosition.trailing,
+                    dropdownIcon: Icon(Icons.keyboard_arrow_down),
+                    showCountryFlag: false,
+                    decoration: InputDecoration(
+                      hintText: AppString.enterMobileNo,
+                      hintStyle: TextStyle(
+                        color: AppColor.grey,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      /* prefix: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(AppImage.keyboardDownArrow,
+                                      width: 10.w),
+                                  SizedBox(width: 10.w),
+                                  Text(
+                                    '|',
+                                    style:
+                                        TextStyleDecoration.labelSmall.copyWith(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                      // color: AppColor.black,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                ],
+                              ), */
+                      contentPadding: EdgeInsets.only(left: 10),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
+                        borderSide: BorderSide(
+                          color: AppColor.textFieldBorderColor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
+                        borderSide: BorderSide(
+                          color: AppColor.textFieldBorderColor,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
+                        borderSide: BorderSide(
+                          color: AppColor.textFieldBorderColor,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7),
+                        borderSide: BorderSide(
+                          color: AppColor.textFieldBorderColor,
+                        ),
+                      ),
+                      // filled: true,
+                      fillColor: Colors.grey.shade100,
+                    ),
+                    initialCountryCode: 'IN',
+                    validator: (value) {
+                      if (value == null) return "Phone is required";
+
+                      return null;
+                    },
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    dropdownTextStyle:
+                        TextStyle(fontSize: 16, color: Colors.black),
+                    onChanged: (phone) {
+                      log('Number: ${phone.countryCode}');
+                    },
+                  ),
+                  /* CustomTextField(
                     controller: controller.phoneController,
                     label: AppString.enterMobileNo,
                     keyboardType: TextInputType.phone,
@@ -60,7 +140,6 @@ class HelpAndSupportScreen extends StatelessWidget {
                     prefixIcon: Container(
                       width: 50.w,
                       margin: EdgeInsets.only(left: 8),
-
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -83,8 +162,8 @@ class HelpAndSupportScreen extends StatelessWidget {
                         return "Enter a valid 10-digit phone number";
                       return null;
                     },
-                  ),
-                  SizedBox(height: 10.h),
+                  ), */
+                  /*  SizedBox(height: 10.h),
                   CustomTextField(
                     label: AppString.gender,
                     isDropdown: true,
@@ -93,8 +172,21 @@ class HelpAndSupportScreen extends StatelessWidget {
                     onDropdownChanged: (String? value) {
                       controller.selectedGender.value = value!;
                     },
-                    validator:
-                        (value) => value == null ? "Select a Gender" : null,
+                    validator: (value) =>
+                        value == null ? "Select a Gender" : null,
+                  ), */
+                  SizedBox(height: 10.h),
+                  CustomTextField(
+                    label: AppString.selectWhichTypeOfProblem,
+                    isDropdown: true,
+                    dropdownItems: controller.problemOptions,
+                    selectedDropdown: controller.selectedProblem,
+                    onDropdownChanged: (String? value) {
+                      controller.selectedProblem.value = value!;
+                    },
+                    validator: (value) => value == null
+                        ? AppString.selectWhichTypeOfProblem
+                        : null,
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(

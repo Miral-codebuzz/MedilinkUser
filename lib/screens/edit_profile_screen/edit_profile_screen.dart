@@ -87,8 +87,8 @@ class EditProfileScreen extends StatelessWidget {
                     onDropdownChanged: (String? value) {
                       controller.selectedGender.value = value!;
                     },
-                    validator:
-                        (value) => value == null ? "Select a Gender" : null,
+                    validator: (value) =>
+                        value == null ? "Select a Gender" : null,
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
@@ -107,7 +107,6 @@ class EditProfileScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-
                   SizedBox(height: 10.h),
                   CustomTextField(
                     controller: controller.streetAddress,
@@ -140,7 +139,7 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   commonButton(
-                    text: AppString.saveChange,
+                    text: AppString.saveChanges,
                     onPressed: () {
                       controller.submitForm();
                     },

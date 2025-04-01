@@ -26,10 +26,12 @@ class HelpAndSupportController extends GetxController {
   final problemController = TextEditingController();
   // final selectedGender = RxnString();
   //  RxString? selectedGender;
-  final RxnString selectedGender = RxnString();
-  final List<String> genderOptions = ['Male', 'Female', 'Other'];
+  final RxnString selectedProblem = RxnString();
+  final List<String> problemOptions = ['Option 1', 'Option 2', 'Option 3'];
 
   void submitForm() {
-    if (formKey.currentState!.validate()) {}
+    if (formKey.currentState!.validate()) {
+      Get.back();
+    }
   }
 }

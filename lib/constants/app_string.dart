@@ -17,6 +17,7 @@ class AppString {
   static const String wewillSendAnOTPTo = "We will send an OTP to";
   static const String mobileNo = "mobile number";
   static const String submit = "Submit";
+  static const String saveMember = "Save Member";
   static const String otpResendIn = "OTP Resend in  ";
   static const String resentOtp = "Resend OTP";
   static const String tellUsAboutYourself = "Tell Us About Yourself";
@@ -34,7 +35,7 @@ class AppString {
   static const String tellUsAboutYourMedicalConditions =
       "Please tell us about your medical conditions have\nyou ever had any medical conditions?";
   static const String search = "Search";
-  static const String home = "home";
+  static const String home = "Home";
   static const String booking = "Booking";
   static const String setting = "Setting";
   static const String kenyMeria = "Keny Meria";
@@ -65,14 +66,14 @@ class AppString {
   static const String yourBookinRequestHasBeenReceived =
       "Your booking request  has been received. We will contact \nyou soon so verify and re-confirm the booking.";
   static const String editProfile = "Edit Profile";
-  static const String addFamilyMembers = "Add Family Members";
+  static const String addFamilyMembers = "Add Family Member";
 
   static const String myBookings = "My Bookings";
 
   static const String helpAndSupport = "Help & Support";
   static const String termsAndCondition = "Terms & Conditions";
   static const String logOut = "Logout";
-  static const String saveChange = "Save Change";
+  static const String saveChanges = "Save Changes";
   static const String cancel = "Cancel";
   static const String logOutAccount = "Logout Account";
   static const String areYouSureYouWantToLogoutThisAccount =
@@ -86,6 +87,8 @@ class AppString {
   static const String haveYouAnyPastMedicalReport =
       " Have You Any Past Medical Report ? ";
   static const String add = " Add";
+  static const String selectWhichTypeOfProblem =
+      " Select which type of problem";
   static const String haveYouAnyMedicalInsurance =
       " Have You Any Medical Insurance? ";
   // static const String insurance2 = " Insurance";

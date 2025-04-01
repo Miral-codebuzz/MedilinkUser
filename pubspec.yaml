@@ -44,6 +44,7 @@ dependencies:
   widgets_easier: ^0.0.10
   dropdown_button2: ^2.3.9
   permission_handler: ^11.4.0
+  intl_phone_field: ^3.2.0
 
 dev_dependencies:
   flutter_test:

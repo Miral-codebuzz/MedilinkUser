@@ -6,7 +6,9 @@ import 'package:doc_o_doctor/controller/bottom_bar_controller.dart';
 import 'package:doc_o_doctor/screens/booking_screen/booking_screen.dart';
 import 'package:doc_o_doctor/screens/home_screen/home_screen.dart';
 import 'package:doc_o_doctor/screens/settings_screen/settings_screen.dart';
+import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -31,15 +33,33 @@ class BottomNavBar extends StatelessWidget {
       return BottomNavigationBarItem(
         icon: Obx(() {
           bool isSelected = controller.selectedIndex.value == index;
-          return ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              isSelected ? AppColor.primaryColor : AppColor.grey,
-              BlendMode.srcIn,
-            ),
-            child: Image.asset(imagePath, width: 24, height: 24),
+          return Column(
+            children: [
+              SizedBox(height: 2.h),
+              Image.asset(
+                imagePath,
+                width: 24,
+                height: 24,
+                color: isSelected ? AppColor.primaryColor : AppColor.grey,
+              ),
+              CustomText(
+                text: label,
+                fontSize: 10.sp,
+                textColor: isSelected ? AppColor.primaryColor : AppColor.grey,
+              ),
+              SizedBox(height: 2.h),
+              Container(
+                height: 5,
+                width: 5,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSelected ? AppColor.primaryColor : AppColor.white,
+                ),
+              ),
+            ],
           );
         }),
-        label: label,
+        label: '',
       );
     }
 
