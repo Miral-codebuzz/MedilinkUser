@@ -58,16 +58,18 @@ class OtpScreen extends StatelessWidget {
               OtpTextField(
                 mainAxisAlignment: MainAxisAlignment.center,
                 fillColor: AppColor.lightGrey,
+                focusedBorderColor: AppColor.primaryColor,
                 filled: true,
                 handleControllers: (controllers) {
                   debugPrint(controllers.length.toString());
                 },
                 fieldWidth: 43.45.w,
                 fieldHeight: 43.45.h,
-
+                cursorColor: AppColor.primaryColor,
                 margin: EdgeInsets.symmetric(horizontal: 7.w),
                 numberOfFields: 6,
                 borderColor: AppColor.grey,
+
                 //set to true to show as box or false to show as dash
                 showFieldAsBox: true,
 
@@ -151,37 +153,37 @@ class OtpScreen extends StatelessWidget {
                     "${(seconds ~/ 60)}:${(seconds % 60).toString().padLeft(2, '0')}";
                 return (controller.resendTime.value > 0)
                     ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            AppString.otpResendIn,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColor.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            formattedTime,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColor.primaryColor,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      )
-                    : TextButton(
-                        onPressed: controller.startResendTimer,
-                        child: Text(
-                          AppString.resentOtp,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppString.otpResendIn,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColor.black,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      );
+                        Text(
+                          formattedTime,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColor.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    )
+                    : TextButton(
+                      onPressed: controller.startResendTimer,
+                      child: Text(
+                        AppString.resentOtp,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: AppColor.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
               }),
               SizedBox(height: 30.h),
               commonButton(

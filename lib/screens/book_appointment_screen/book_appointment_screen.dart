@@ -19,8 +19,9 @@ class BookAppointmentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookAppointmentController controller =
-        Get.put(BookAppointmentController());
+    final BookAppointmentController controller = Get.put(
+      BookAppointmentController(),
+    );
     return Scaffold(
       backgroundColor: AppColor.white,
       bottomNavigationBar: Padding(
@@ -55,11 +56,14 @@ class BookAppointmentScreen extends StatelessWidget {
                       children: [
                         Obx(
                           () => Text(
-                            DateFormat.yMMMM()
-                                .format(controller.selectedDate.value),
+                            DateFormat.yMMMM().format(
+                              controller.selectedDate.value,
+                            ),
+
                             style: TextStyleDecoration.labelLarge.copyWith(
                               color: AppColor.black,
                               fontWeight: FontWeight.w500,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -72,11 +76,12 @@ class BookAppointmentScreen extends StatelessWidget {
                 SizedBox(
                   height: 65.h,
                   child: Obx(() {
-                    int daysInMonth = DateTime(
-                      controller.selectedDate.value.year,
-                      controller.selectedDate.value.month + 1,
-                      0,
-                    ).day;
+                    int daysInMonth =
+                        DateTime(
+                          controller.selectedDate.value.year,
+                          controller.selectedDate.value.month + 1,
+                          0,
+                        ).day;
 
                     return ListView.builder(
                       controller: controller.scrollController,
@@ -100,48 +105,55 @@ class BookAppointmentScreen extends StatelessWidget {
                               controller.scrollToSelectedDate();
                             },
                             child: Container(
-                              width: 57,
+                              width: 60,
                               decoration: BoxDecoration(
-                                color: isSelected
-                                    ? AppColor.primaryColor
-                                    : AppColor.white,
+                                color:
+                                    isSelected
+                                        ? AppColor.primaryColor
+                                        : AppColor.white,
                                 border: Border.all(
-                                  color: AppColor.borderGrey
-                                      .withValues(alpha: 0.1),
+                                  color: AppColor.borderGrey.withValues(
+                                    alpha: 0.1,
+                                  ),
                                   width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(9.26),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 12),
+                                  vertical: 10,
+                                  horizontal: 12,
+                                ),
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
-                                      DateFormat.E().format(date).toUpperCase(),
-                                      style: TextStyleDecoration.labelLarge
-                                          .copyWith(
-                                        color: isSelected
-                                            ? AppColor.white
-                                            : AppColor.textGrey
-                                                .withOpacity(0.6),
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
                                       DateFormat.d().format(date),
                                       style: TextStyleDecoration.labelLarge
                                           .copyWith(
-                                        color: isSelected
-                                            ? AppColor.white
-                                            : AppColor.textGrey
-                                                .withOpacity(0.6),
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                            color:
+                                                isSelected
+                                                    ? AppColor.white
+                                                    : AppColor.textGrey
+                                                        .withOpacity(0.6),
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                    Text(
+                                      DateFormat.E().format(date).toUpperCase(),
+                                      style: TextStyleDecoration.labelLarge
+                                          .copyWith(
+                                            color:
+                                                isSelected
+                                                    ? AppColor.white
+                                                    : AppColor.textGrey
+                                                        .withOpacity(0.6),
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                      maxLines: 1,
                                     ),
                                   ],
                                 ),
@@ -190,9 +202,10 @@ class BookAppointmentScreen extends StatelessWidget {
                             width: 72.19,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: controller.selectedTime.value == index
-                                  ? AppColor.primaryColor
-                                  : null,
+                              color:
+                                  controller.selectedTime.value == index
+                                      ? AppColor.primaryColor
+                                      : null,
                               border: Border.all(
                                 color: AppColor.borderGrey.withValues(
                                   alpha: 0.1,
@@ -204,11 +217,12 @@ class BookAppointmentScreen extends StatelessWidget {
                             child: Text(
                               avilableTime[index],
                               style: TextStyleDecoration.labelLarge.copyWith(
-                                color: controller.selectedTime.value == index
-                                    ? AppColor.white
-                                    : AppColor.textGrey.withValues(
-                                        alpha: 0.60,
-                                      ),
+                                color:
+                                    controller.selectedTime.value == index
+                                        ? AppColor.white
+                                        : AppColor.textGrey.withValues(
+                                          alpha: 0.60,
+                                        ),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -219,28 +233,31 @@ class BookAppointmentScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                Obx(() => controller.selectedTime.value == -1
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 5.h, horizontal: 20.w),
-                        child: CustomText(
-                          text: controller.errorText.value,
-                          textColor: AppColor.red,
-                          fontSize: 10.sp,
-                        ),
-                      )
-                    : SizedBox()),
-
-                SizedBox(
-                  height: 20.h,
+                Obx(
+                  () =>
+                      controller.selectedTime.value == -1
+                          ? Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5.h,
+                              horizontal: 20.w,
+                            ),
+                            child: CustomText(
+                              text: controller.errorText.value,
+                              textColor: AppColor.red,
+                              fontSize: 10.sp,
+                            ),
+                          )
+                          : SizedBox(),
                 ),
+
+                SizedBox(height: 20.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: GestureDetector(
                     onTapDown: (TapDownDetails details) async {
-                      final RenderBox overlay = Overlay.of(context)
-                          .context
-                          .findRenderObject() as RenderBox;
+                      final RenderBox overlay =
+                          Overlay.of(context).context.findRenderObject()
+                              as RenderBox;
                       final Offset position = details.globalPosition;
 
                       final result = await showMenu(
@@ -251,12 +268,13 @@ class BookAppointmentScreen extends StatelessWidget {
                           overlay.size.width - position.dx,
                           overlay.size.height - position.dy,
                         ),
-                        items: controller.options.map((String value) {
-                          return PopupMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                        items:
+                            controller.options.map((String value) {
+                              return PopupMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
                       );
 
                       if (result != null) {
@@ -284,18 +302,18 @@ class BookAppointmentScreen extends StatelessWidget {
                 Obx(() {
                   return controller.selectedValue.value == AppString.forSelf
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: CustomTextField(
-                            controller: controller.problemController,
-                            label: AppString.writeYourProblemHere,
-                            maxLine: 10,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty)
-                                return "This field is required";
-                              return null;
-                            },
-                          ),
-                        )
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: CustomTextField(
+                          controller: controller.problemController,
+                          label: AppString.writeYourProblemHere,
+                          maxLine: 10,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty)
+                              return "This field is required";
+                            return null;
+                          },
+                        ),
+                      )
                       : SizedBox();
                 }),
                 Obx(() {
@@ -304,45 +322,45 @@ class BookAppointmentScreen extends StatelessWidget {
                           controller.selectedValue.value ==
                               AppString.forOtherPerson
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            children: [
-                              CustomTextField(
-                                controller: controller.nameController,
-                                label: AppString.name,
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty)
-                                    return "Name is required";
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              CustomTextField(
-                                controller: controller.ageController,
-                                keyboardType: TextInputType.numberWithOptions(),
-                                label: AppString.age,
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty)
-                                    return "Age is required";
-                                  int? age = int.tryParse(value);
-                                  if (age == null || age < 1 || age > 120)
-                                    return "Enter a valid age (1-120)";
-                                  return null;
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              commonPhoneField(
-                                controller: controller.phoneController,
-                                onChanged: (phone) {
-                                  log('Number: ${phone.countryCode}');
-                                },
-                                validator: (value) {
-                                  if (value == null) return "Phone is required";
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            CustomTextField(
+                              controller: controller.nameController,
+                              label: AppString.name,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty)
+                                  return "Name is required";
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                              controller: controller.ageController,
+                              keyboardType: TextInputType.numberWithOptions(),
+                              label: AppString.age,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty)
+                                  return "Age is required";
+                                int? age = int.tryParse(value);
+                                if (age == null || age < 1 || age > 120)
+                                  return "Enter a valid age (1-120)";
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            commonPhoneField(
+                              controller: controller.phoneController,
+                              onChanged: (phone) {
+                                log('Number: ${phone.countryCode}');
+                              },
+                              validator: (value) {
+                                if (value == null) return "Phone is required";
 
-                                  return null;
-                                },
-                              ),
-                              /* CustomTextField(
+                                return null;
+                              },
+                            ),
+                            /* CustomTextField(
                                 controller: controller.phoneController,
                                 label: AppString.enterMobileNo,
                                 keyboardType: TextInputType.phone,
@@ -374,32 +392,33 @@ class BookAppointmentScreen extends StatelessWidget {
                                   return null;
                                 },
                               ), */
-                              SizedBox(height: 10),
-                              CustomTextField(
-                                label: AppString.gender,
-                                isDropdown: true,
-                                dropdownItems: controller.genderOptions,
-                                selectedDropdown: controller.selectedGender,
-                                onDropdownChanged: (String? value) {
-                                  controller.selectedGender.value = value!;
-                                },
-                                validator: (value) =>
-                                    value == null ? "Select a Gender" : null,
-                              ),
-                              SizedBox(height: 10),
-                              CustomTextField(
-                                controller: controller.problemController,
-                                label: AppString.writeYourProblemHere,
-                                maxLine: 10,
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty)
-                                    return "This field is required";
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
-                        )
+                            SizedBox(height: 10),
+                            CustomTextField(
+                              label: AppString.gender,
+                              isDropdown: true,
+                              dropdownItems: controller.genderOptions,
+                              selectedDropdown: controller.selectedGender,
+                              onDropdownChanged: (String? value) {
+                                controller.selectedGender.value = value!;
+                              },
+                              validator:
+                                  (value) =>
+                                      value == null ? "Select a Gender" : null,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                              controller: controller.problemController,
+                              label: AppString.writeYourProblemHere,
+                              maxLine: 10,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty)
+                                  return "This field is required";
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      )
                       : SizedBox();
                 }),
               ],

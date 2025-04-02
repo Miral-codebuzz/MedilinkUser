@@ -66,6 +66,7 @@ class LoginScreen extends StatelessWidget {
                               dropdownIconPosition: IconPosition.trailing,
                               dropdownIcon: Icon(Icons.keyboard_arrow_down),
                               showCountryFlag: false,
+                              cursorColor: AppColor.primaryColor,
                               decoration: InputDecoration(
                                 errorText:
                                     controller.errorText.value.isEmpty

@@ -98,7 +98,7 @@ class NotificationContainerWidget extends StatelessWidget {
           height: 97,
           padding: EdgeInsets.all(13),
           decoration: BoxDecoration(
-            color: AppColor.lightPinkColor,
+            color: AppColor.primaryColor.withOpacity(0.15),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -107,15 +107,11 @@ class NotificationContainerWidget extends StatelessWidget {
                 height: 45,
                 width: 45,
                 decoration: BoxDecoration(
-                  color: AppColor.purpleColor,
+                  color: AppColor.primaryColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 alignment: Alignment.center,
-                child: Image.asset(
-                  notificationModel.imageIcon,
-                  height: 20,
-                  width: 20,
-                ),
+                child: Icon(Icons.notifications, color: Colors.white),
               ),
               SizedBox(width: 15),
               Expanded(
@@ -135,7 +131,7 @@ class NotificationContainerWidget extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 4),
                     CustomText(
                       text: notificationModel.subTitle,
                       fontSize: 12,

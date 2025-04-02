@@ -24,7 +24,9 @@ class BookingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               appBarWidget(
-                  title: AppString.appiontments, showBackIcon: isShowBackIcon),
+                title: AppString.appiontments,
+                showBackIcon: isShowBackIcon,
+              ),
               SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
@@ -154,7 +156,7 @@ class CustomAppoinmentContainer extends StatelessWidget {
                 child: Container(
                   height: 39,
                   decoration: BoxDecoration(
-                    color: AppColor.lightPinkColor,
+                    color: Color.fromARGB(33, 18, 64, 90),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   alignment: Alignment.center,
@@ -166,12 +168,12 @@ class CustomAppoinmentContainer extends StatelessWidget {
                         height: 1.1,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        textColor: AppColor.purpleColor,
+                        textColor: AppColor.primaryColor,
                       ),
                       SizedBox(width: 5),
                       Icon(
                         Icons.arrow_forward,
-                        color: AppColor.purpleColor,
+                        color: AppColor.primaryColor,
                         size: 15,
                       ),
                     ],

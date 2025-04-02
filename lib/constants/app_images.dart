@@ -1,8 +1,8 @@
 class AppImage {
   static const String basePath = "assets/images";
 
-  static const String logoWhite = "$basePath/logo_white.png";
-  static const String logoBlue = "$basePath/logo_blue.png";
+  static const String logoWhite = "$basePath/logoWhiteN.png";
+  static const String logoBlue = "$basePath/logoNew.png";
   static const String monitorHear = "$basePath/monitor_hear.png";
   static const String google = "$basePath/google.png";
   static const String calender = "$basePath/calender.png";
@@ -37,4 +37,5 @@ class AppImage {
   static const String downIcon = "$basePath/down_arrow.png";
   static const String clockIcon = "$basePath/clock_icon.png";
   static const String keyboardDownArrow = "$basePath/keyboard_down_arrow.png";
+  static const String downArrow = "$basePath/dropDown.png";
 }

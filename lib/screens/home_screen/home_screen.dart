@@ -110,6 +110,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     imageIconButton(
                       image: AppImage.detailsIcon,
+
                       height: 15.h,
                       width: 15.h,
                     ),
@@ -238,8 +239,8 @@ class DoctorsDetailsWidget extends StatelessWidget {
                           SizedBox(width: 5),
                           Image.asset(
                             AppImage.rightArrowIcon,
-                            height: 20,
-                            width: 20,
+                            height: 25,
+                            width: 25,
                           ),
                         ],
                       ),

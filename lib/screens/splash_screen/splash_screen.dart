@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 4), () {
       Get.off(() => LoginScreen());
     });
   }
@@ -31,18 +31,23 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 150),
           Spacer(),
           Container(
             alignment: Alignment.center,
-            child: Image.asset(AppImage.logoWhite, height: 150.h, width: 150.w),
+            child: Image.asset(AppImage.logoWhite, height: 120.h, width: 120.w),
           ),
-          SizedBox(height: 10.h),
+          // SizedBox(height: 10.h),
           Text(
-            AppString.docO,
-            style: TextStyleDecoration.labelSmall.copyWith(fontSize: 30.sp),
+            "MEDILINK",
+            style: TextStyleDecoration.labelSmall.copyWith(fontSize: 40.sp),
+          ),
+          Text(
+            "Smart Care, Anytime",
+            style: TextStyleDecoration.labelSmall.copyWith(fontSize: 15.sp),
           ),
           Spacer(),
-          Image.asset(AppImage.monitorHear, height: 150.h, width: 150.w),
+          Image.asset("assets/images/h.gif", height: 150.h, width: 150.w),
         ],
       ),
     );

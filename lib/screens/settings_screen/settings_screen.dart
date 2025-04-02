@@ -72,9 +72,7 @@ class SettingsScreen extends StatelessWidget {
                 title: AppString.myBookings,
                 prefixIcon: AppImage.bookingIcon,
                 onTap: () {
-                  Get.to(() => BookingScreen(
-                        isShowBackIcon: true,
-                      ));
+                  Get.to(() => BookingScreen(isShowBackIcon: true));
                 },
               ),
               CustomListStileWidget(
@@ -103,7 +101,7 @@ class SettingsScreen extends StatelessWidget {
                   );
                 },
                 showSufixIcon: false,
-                iconAndTextColor: AppColor.purpleColor,
+                iconAndTextColor: AppColor.primaryColor,
               ),
             ],
           ),
@@ -153,7 +151,7 @@ class CustomListStileWidget extends StatelessWidget {
             SizedBox(width: 10),
             CustomText(
               text: title,
-              fontSize: 12,
+              fontSize: 13,
               fontWeight: FontWeight.w400,
               textColor: iconAndTextColor ?? AppColor.textGrey,
             ),
@@ -228,6 +226,7 @@ Widget logOutModelBottomSheet() {
           children: [
             commonButton(
               text: AppString.logOut,
+
               onPressed: () {
                 Get.offAll(LoginScreen());
               },

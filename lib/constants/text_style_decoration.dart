@@ -14,6 +14,7 @@ class TextStyleDecoration {
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
     fontFamily: fontFamily,
+
     letterSpacing: 0,
   );
   static TextStyle get labelLarge => const TextStyle(

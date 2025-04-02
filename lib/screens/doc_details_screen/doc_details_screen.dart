@@ -23,7 +23,7 @@ class DocDetailsScreen extends StatelessWidget {
       backgroundColor: AppColor.white,
       bottomNavigationBar: Container(
         margin: EdgeInsets.all(10),
-        height: 115,
+        height: Get.height * 0.15,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
