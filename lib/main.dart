@@ -1,11 +1,20 @@
+import 'package:doc_o_doctor/constants/settings.dart';
+import 'package:doc_o_doctor/service/rest_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'screens/splash_screen/splash_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  controller();
   runApp(const MyApp());
+  await Settings.getInstance();
+}
+
+void controller() {
+  Get.put(RestService(), permanent: true);
 }
 
 class MyApp extends StatelessWidget {

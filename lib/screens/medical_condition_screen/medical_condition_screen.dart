@@ -1,3 +1,4 @@
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -61,9 +62,10 @@ class MedicalConditionScreen extends StatelessWidget {
                   Obx(
                     () => insuranceTitleRow(
                       title: AppString.haveYouAnyMedicalInsurance,
-                      subTitle: controller.isMedicalUploadVisible.value
-                          ? AppString.cancel
-                          : AppString.add,
+                      subTitle:
+                          controller.isMedicalUploadVisible.value
+                              ? AppString.cancel
+                              : AppString.add,
                       onTap: controller.toggleMedicalUpload,
                     ),
                   ),
@@ -80,26 +82,29 @@ class MedicalConditionScreen extends StatelessWidget {
                     () => Wrap(
                       spacing: 8.0,
                       runSpacing: 8.0,
-                      children: controller.medicalPdfs
-                          .map(
-                            (text) => customSelectedItem(
-                              text: text,
-                              onclose: () {
-                                controller.removeMedicalPdf(text);
-                              },
-                            ),
-                          )
-                          .toList(),
+                      children:
+                          controller.medicalPdfs
+                              .map(
+                                (text) => customSelectedItem(
+                                  text: text,
+                                  onclose: () {
+                                    controller.removeMedicalPdf(text);
+                                  },
+                                ),
+                              )
+                              .toList(),
                     ),
                   ),
+                  SizedBox(height: 10.h),
                   Obx(
-                    () => controller.isMedicalUploadVisible.value
-                        ? uploadInsurance(
-                            uploadOnTap: () {
-                              controller.pickMedicalPdfs();
-                            },
-                          )
-                        : SizedBox.shrink(),
+                    () =>
+                        controller.isMedicalUploadVisible.value
+                            ? uploadInsurance(
+                              uploadOnTap: () {
+                                controller.pickMedicalPdfs();
+                              },
+                            )
+                            : SizedBox.shrink(),
                   ),
                   SizedBox(height: 10.h),
 
@@ -107,9 +112,10 @@ class MedicalConditionScreen extends StatelessWidget {
                   Obx(
                     () => insuranceTitleRow(
                       title: AppString.haveYouAnyPastMedicalReport,
-                      subTitle: controller.isReportUploadVisible.value
-                          ? AppString.cancel
-                          : AppString.add,
+                      subTitle:
+                          controller.isReportUploadVisible.value
+                              ? AppString.cancel
+                              : AppString.add,
                       onTap: controller.toggleReportUpload,
                     ),
                   ),
@@ -126,32 +132,32 @@ class MedicalConditionScreen extends StatelessWidget {
                     () => Wrap(
                       spacing: 8.0,
                       runSpacing: 8.0,
-                      children: controller.reportPdfs
-                          .map(
-                            (text) => customSelectedItem(
-                              text: text,
-                              onclose: () {
-                                controller.removeReportPdf(text);
-                              },
-                            ),
-                          )
-                          .toList(),
+                      children:
+                          controller.reportPdfs
+                              .map(
+                                (text) => customSelectedItem(
+                                  text: text,
+                                  onclose: () {
+                                    controller.removeReportPdf(text);
+                                  },
+                                ),
+                              )
+                              .toList(),
                     ),
                   ),
+                  SizedBox(height: 10.h),
                   Obx(
-                    () => controller.isReportUploadVisible.value
-                        ? uploadInsurance(
-                            uploadOnTap: () {
-                              controller.pickReportPdfs();
-                            },
-                          )
-                        : SizedBox.shrink(),
+                    () =>
+                        controller.isReportUploadVisible.value
+                            ? uploadInsurance(
+                              uploadOnTap: () {
+                                controller.pickReportPdfs();
+                              },
+                            )
+                            : SizedBox.shrink(),
                   ),
                   SizedBox(height: 10.h),
-                  // CommonTextfield(
-                  //   hintText: 'Describe Your Medical Problem',
-                  //   maxLines: 5,
-                  // ),
+
                   CustomTextField(
                     controller: controller.medicalProblemController,
                     label: AppString.describeYourMedicalProblem,
@@ -163,16 +169,22 @@ class MedicalConditionScreen extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 10.h),
-                  commonButton(
-                    text: AppString.next,
-                    onPressed: () {
-                      controller.submitForm();
-                    },
-                  ),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: Commonwidget.commonLoader());
+                    }
+
+                    return commonButton(
+                      text: AppString.next,
+                      onPressed: () {
+                        controller.uploadMedicalCondition(context);
+                      },
+                    );
+                  }),
                   SizedBox(height: 10.h),
                   GestureDetector(
                     onTap: () {
-                      Get.offAll(BottomNavBar());
+                      // Get.offAll(BottomNavBar());
                     },
                     child: Text(
                       "Skip For Now ",
@@ -293,6 +305,8 @@ Widget customSelectedItem({
   required String text,
   required void Function()? onclose,
 }) {
+  String fileName = text.split('/').last;
+
   return IntrinsicWidth(
     child: Container(
       decoration: BoxDecoration(
@@ -305,11 +319,12 @@ Widget customSelectedItem({
         child: Row(
           children: [
             CustomText(
-              text: text,
+              text: fileName,
               textColor: AppColor.black,
               fontSize: 12.sp,
               maxLine: 1,
               height: 1.2,
+
               fontWeight: FontWeight.w400,
             ),
             SizedBox(width: 3),

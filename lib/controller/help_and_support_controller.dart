@@ -1,4 +1,8 @@
+import 'package:doc_o_doctor/Model/helpAndSupport.dart';
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
+import 'package:doc_o_doctor/service/rest_services.dart';
+import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +35,55 @@ class HelpAndSupportController extends GetxController {
 
   void submitForm() {
     if (formKey.currentState!.validate()) {
-      Get.back();
+      if (phoneController.text.isEmpty) {
+        Commonwidget.showErrorSnackbar(message: "Please enter a mobile number");
+        return;
+      }
+      print("Form is valid");
+      // Get.back();
+      helpAndSupport();
+    }
+  }
+
+  var isLoading = false.obs;
+  var countryCode = "+91";
+  var service = Get.find<RestService>();
+
+  Future<void> helpAndSupport() async {
+    try {
+      var connection = await Commonwidget.checkConnectivity();
+      if (!connection) return;
+      isLoading.value = true;
+      HelpAndSupportModel helpAndSupportModel = HelpAndSupportModel();
+      helpAndSupportModel.name = nameController.text;
+      helpAndSupportModel.mobileNumber = "$countryCode ${phoneController.text}";
+      helpAndSupportModel.problemType = selectedValue.value;
+      helpAndSupportModel.problem = problemController.text;
+
+      var result = await service.helpAndSupport(helpAndSupportModel);
+
+      if (result.status ?? false) {
+        Get.back();
+        isLoading.value = false;
+        Commonwidget.showSuccessSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+      } else if (result.status == false) {
+        isLoading.value = false;
+        Commonwidget.showErrorSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+      } else {
+        isLoading.value = false;
+        Commonwidget.showErrorSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint("ERROR :- ${e.toString()}");
+    } finally {
+      isLoading.value = false;
     }
   }
 }

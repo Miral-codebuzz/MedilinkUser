@@ -39,12 +39,18 @@ dependencies:
   flutter_otp_text_field: ^1.5.1+1
   pin_code_fields: ^8.0.1
   intl: ^0.20.2
-  file_picker: ^9.0.2
+  file_picker: 
   dotted_line: ^3.2.3
   widgets_easier: ^0.0.10
   dropdown_button2: ^2.3.9
-  permission_handler: ^11.4.0
+  permission_handler:
   intl_phone_field: ^3.2.0
+  shared_preferences: ^2.3.2
+  http:
+  connectivity_plus: ^5.0.2
+  mime: 
+  http_parser: ^4.0.5
+
 
 dev_dependencies:
   flutter_test:

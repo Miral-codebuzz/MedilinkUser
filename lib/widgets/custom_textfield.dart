@@ -50,32 +50,28 @@ class CustomTextField extends StatelessWidget {
         const SizedBox(height: 5),
         isDropdown
             ? Obx(
-              () => DropdownButtonFormField2<String>(
+              () => DropdownButtonFormField<String>(
                 value: selectedDropdown?.value,
                 style: TextStyleDecoration.labelMedium.copyWith(
                   color: AppColor.black,
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
                 ),
-
                 decoration: InputDecoration(
-                  filled: true,
+                  filled: true, // <--- Re-enable filled property
                   fillColor: Colors.grey.shade100,
-                  hintText: label,
+                  label: Text(
+                    (selectedDropdown?.value != null &&
+                            selectedDropdown!.value!.isNotEmpty)
+                        ? ""
+                        : label,
+                    style: TextStyleDecoration.labelMedium.copyWith(
+                      color: AppColor.grey,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
 
-                  // Adjust padding
-                  // suffixIcon: Container(
-                  //   height: 12.h,
-                  //   width: 12.w,
-                  //   padding: EdgeInsets.only(top: 10),
-                  //   // margin: EdgeInsets.all(15.w),
-                  //   // color: Colors.red,
-                  //   child: Image.asset(
-                  //     AppImage.downArrow,
-                  //     width: 12.w,
-                  //     height: 12.h,
-                  //   ),
-                  // ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -108,11 +104,6 @@ class CustomTextField extends StatelessWidget {
                       width: 1,
                     ),
                   ),
-                  hintStyle: TextStyleDecoration.labelSmall.copyWith(
-                    color: AppColor.grey,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
                 ),
 
                 items:
@@ -123,7 +114,6 @@ class CustomTextField extends StatelessWidget {
                       );
                     }).toList(),
                 onChanged: onDropdownChanged,
-
                 validator: validator,
               ),
             )

@@ -1,5 +1,10 @@
+import 'package:doc_o_doctor/Model/loginModel.dart';
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
+import 'package:doc_o_doctor/constants/settings.dart';
 import 'package:doc_o_doctor/screens/medical_condition_screen/medical_condition_screen.dart';
+import 'package:doc_o_doctor/service/rest_services.dart';
+import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -39,9 +44,9 @@ class AboutYourselfController extends GetxController {
   final RxnString selectedGender = RxnString();
   final List<String> genderOptions = ['Male', 'Female', 'Other'];
 
-  void submitForm() {
+  void submitForm(context) {
     if (formKey.currentState!.validate()) {
-      Get.to(() => MedicalConditionScreen());
+      userAbout(context);
     }
   }
 
@@ -65,6 +70,44 @@ class AboutYourselfController extends GetxController {
     if (picked != null) {
       dobController.text = DateFormat('dd/MM/yyyy').format(picked);
       dob.value = dobController.text;
+    }
+  }
+
+  var isLoading = false.obs;
+
+  var service = Get.find<RestService>();
+
+  Future<void> userAbout(context) async {
+    try {
+      var connection = await Commonwidget.checkConnectivity();
+      if (!connection) return;
+      isLoading.value = true;
+      TellAboutSelfRequest tellAboutSelfRequest = TellAboutSelfRequest();
+      tellAboutSelfRequest.name = nameController.text;
+      tellAboutSelfRequest.gender = selectedGender.value;
+      tellAboutSelfRequest.address = streetAddress.text;
+      tellAboutSelfRequest.city = cityController.text;
+      tellAboutSelfRequest.country = countryController.text;
+      tellAboutSelfRequest.dateOfBirth = dob.value;
+
+      var result = await service.tellAboutSelf(tellAboutSelfRequest);
+
+      if (result.status ?? false) {
+        isLoading.value = false;
+        Commonwidget.showSuccessSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+        Settings.step = "1";
+        Get.off(() => MedicalConditionScreen());
+      } else {
+        isLoading.value = false;
+        Commonwidget.showErrorSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint("ERROR :- ${e.toString()}");
     }
   }
 }

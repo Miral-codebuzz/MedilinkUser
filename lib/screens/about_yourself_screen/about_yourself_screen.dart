@@ -1,3 +1,4 @@
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -21,27 +22,18 @@ class AboutYourselfScreen extends StatelessWidget {
       backgroundColor: AppColor.white,
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(20),
-        child: commonButton(
-          onPressed: () {
-            controller.submitForm();
-            // if (controller.validateForm()) {
-            //   Get.to(() => MedicalConditionScreen());
-            //   /*  Get.snackbar(
-            //     "Success",
-            //     "Form Submitted Successfully",
-            //     snackPosition: SnackPosition.BOTTOM,
-            //   ); */
-            // } else {
-            //   /* Get.snackbar(
-            //     "Error",
-            //     "Please fill all fields",
-            //     snackPosition: SnackPosition.BOTTOM,
-            //   ); */
-            // }
-          },
-          text: AppString.next,
-          width: 325.w,
-        ),
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(child: Commonwidget.commonLoader());
+          }
+          return commonButton(
+            onPressed: () {
+              controller.submitForm(context);
+            },
+            text: AppString.next,
+            width: 325.w,
+          );
+        }),
       ),
       body: Form(
         key: controller.formKey,
@@ -75,142 +67,7 @@ class AboutYourselfScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  // Obx(
-                  //   () => Padding(
-                  //     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  //     child: Column(
-                  //       children: [
-                  //         CommonTextfield(
-                  //           hintText: AppString.name,
-                  //           onChanged: (p0) {
-                  //             controller.name.value = p0;
-                  //           },
-                  //           errorText:
-                  //               controller.name.value.isEmpty
-                  //                   ? "Name is required"
-                  //                   : null,
-                  //         ),
-                  //         // _buildDropdownField(),
-                  //         DropdownButtonFormField<String>(
-                  //           decoration: InputDecoration(
-                  //             filled: true,
-                  //             fillColor: AppColor.lightGrey,
-                  //             errorText:
-                  //                 controller.selectedGender.value == null
-                  //                     ? "Gender is required"
-                  //                     : null,
-                  //             border: OutlineInputBorder(
-                  //               borderRadius: BorderRadius.circular(8),
-                  //               borderSide: BorderSide(color: AppColor.grey),
-                  //             ),
-                  //             enabledBorder: OutlineInputBorder(
-                  //               borderRadius: BorderRadius.circular(8),
-                  //               borderSide: BorderSide(
-                  //                 color: AppColor.textFieldBorderColor,
-                  //                 width: 1,
-                  //               ),
-                  //             ),
-                  //             focusedBorder: OutlineInputBorder(
-                  //               borderRadius: BorderRadius.circular(8),
-                  //               borderSide: BorderSide(
-                  //                 color: AppColor.textFieldBorderColor,
-                  //                 width: 1,
-                  //               ),
-                  //             ),
-                  //             errorBorder: OutlineInputBorder(
-                  //               borderRadius: BorderRadius.circular(8),
-                  //               borderSide: BorderSide(
-                  //                 color: AppColor.textFieldBorderColor,
-                  //                 width: 1,
-                  //               ),
-                  //             ),
-                  //             focusedErrorBorder: OutlineInputBorder(
-                  //               borderRadius: BorderRadius.circular(8),
-                  //               borderSide: BorderSide(
-                  //                 color: AppColor.textFieldBorderColor,
-                  //                 width: 1,
-                  //               ),
-                  //             ),
-                  //           ),
 
-                  //           hint: Text(
-                  //             "Gender",
-                  //             style: TextStyleDecoration.labelSmall.copyWith(
-                  //               fontSize: 14.sp,
-                  //               fontWeight: FontWeight.w400,
-                  //               color: AppColor.grey,
-                  //             ),
-                  //           ),
-                  //           value: controller.selectedGender.value,
-                  //           onChanged:
-                  //               (value) => controller.selectedGender.value = value,
-                  //           items:
-                  //               genderOptions.map((gender) {
-                  //                 return DropdownMenuItem(
-                  //                   value: gender,
-                  //                   child: Text(
-                  //                     gender,
-                  //                     style: TextStyleDecoration.labelSmall
-                  //                         .copyWith(
-                  //                           fontSize: 14.sp,
-                  //                           fontWeight: FontWeight.w400,
-                  //                           color: AppColor.black,
-                  //                         ),
-                  //                   ),
-                  //                 );
-                  //               }).toList(),
-                  //         ),
-                  //         SizedBox(height: 10.h),
-                  //         CommonTextfield(
-                  //           controller: dobController,
-                  //           hintText: AppString.dateOfBirth,
-                  //           isShowSuffixIcon: AppImage.calender,
-                  //           readOnly: true,
-                  //           suffixIconOnTap: () {
-                  //             _selectDate(context);
-                  //           },
-                  //           onChanged: (p0) {
-                  //             controller.dob.value = p0;
-                  //           },
-                  //           errorText:
-                  //               controller.dob.value.isEmpty
-                  //                   ? "Date of Birth is required"
-                  //                   : null,
-                  //         ),
-                  //         CommonTextfield(
-                  //           hintText: AppString.streetAddress,
-                  //           onChanged: (p0) {
-                  //             controller.streetAddress.value = p0;
-                  //           },
-                  //           errorText:
-                  //               controller.streetAddress.value.isEmpty
-                  //                   ? "Street Address is required"
-                  //                   : null,
-                  //         ),
-                  //         CommonTextfield(
-                  //           hintText: AppString.city,
-                  //           onChanged: (p0) {
-                  //             controller.city.value = p0;
-                  //           },
-                  //           errorText:
-                  //               controller.city.value.isEmpty
-                  //                   ? "City is required"
-                  //                   : null,
-                  //         ),
-                  //         CommonTextfield(
-                  //           hintText: AppString.country,
-                  //           onChanged: (p0) {
-                  //             controller.country.value = p0;
-                  //           },
-                  //           errorText:
-                  //               controller.country.value.isEmpty
-                  //                   ? "Country is required"
-                  //                   : null,
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   CustomTextField(
                     controller: controller.nameController,
                     label: AppString.name,
@@ -224,6 +81,7 @@ class AboutYourselfScreen extends StatelessWidget {
                   CustomTextField(
                     label: AppString.gender,
                     isDropdown: true,
+                    readOnly: true,
                     dropdownItems: controller.genderOptions,
                     selectedDropdown: controller.selectedGender,
                     onDropdownChanged: (String? value) {

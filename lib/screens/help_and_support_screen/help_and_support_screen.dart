@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
@@ -9,6 +10,7 @@ import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class HelpAndSupportScreen extends StatelessWidget {
@@ -126,10 +128,14 @@ class HelpAndSupportScreen extends StatelessWidget {
                       return null;
                     },
                     style: TextStyle(fontSize: 16, color: Colors.black),
-                    dropdownTextStyle:
-                        TextStyle(fontSize: 16, color: Colors.black),
+                    dropdownTextStyle: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
                     onChanged: (phone) {
                       log('Number: ${phone.countryCode}');
+
+                      controller.countryCode = phone.completeNumber;
                     },
                   ),
                   /* CustomTextField(
@@ -184,9 +190,11 @@ class HelpAndSupportScreen extends StatelessWidget {
                     onDropdownChanged: (String? value) {
                       controller.selectedProblem.value = value!;
                     },
-                    validator: (value) => value == null
-                        ? AppString.selectWhichTypeOfProblem
-                        : null,
+                    validator:
+                        (value) =>
+                            value == null
+                                ? AppString.selectWhichTypeOfProblem
+                                : null,
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
@@ -200,12 +208,18 @@ class HelpAndSupportScreen extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 20),
-                  commonButton(
-                    text: AppString.submit,
-                    onPressed: () {
-                      controller.submitForm();
-                    },
-                  ),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: Commonwidget.commonLoader());
+                    }
+
+                    return commonButton(
+                      text: AppString.submit,
+                      onPressed: () {
+                        controller.submitForm();
+                      },
+                    );
+                  }),
                 ],
               ),
             ),

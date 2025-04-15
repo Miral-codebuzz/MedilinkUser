@@ -1,8 +1,10 @@
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
 import 'package:doc_o_doctor/screens/edit_profile_screen/edit_profile_screen.dart';
+import 'package:doc_o_doctor/screens/home_screen/homeController.dart';
 import 'package:doc_o_doctor/screens/notification_screen/notification_screen.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
@@ -19,123 +21,137 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController search = TextEditingController();
 
+    final Homecontroller controller = Get.put(Homecontroller());
+
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
-            child: Column(
-              children: [
-                SizedBox(height: 20.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //keny Meria,
-                        Text(
-                          AppString.kenyMeria,
-                          style: TextStyleDecoration.labelLarge.copyWith(
-                            color: AppColor.black,
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(child: Commonwidget.commonLoader());
+          }
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.w),
+              child: Column(
+                children: [
+                  SizedBox(height: 20.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //keny Meria,
+                          Text(
+                            AppString.kenyMeria,
+                            style: TextStyleDecoration.labelLarge.copyWith(
+                              color: AppColor.black,
+                            ),
                           ),
-                        ),
-                        //Smile, stay positive, and today amazing
-                        Text(
-                          AppString.smileStayPositiveAndTodayAmazing,
-                          style: TextStyleDecoration.labelSmall.copyWith(
-                            color: AppColor.grey,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
+                          //Smile, stay positive, and today amazing
+                          Text(
+                            AppString.smileStayPositiveAndTodayAmazing,
+                            style: TextStyleDecoration.labelSmall.copyWith(
+                              color: AppColor.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
+                        ],
+                      ),
+                      Spacer(),
 
-                    //notification icon
-                    imageIconButton(
-                      image: AppImage.notificationIcon,
-                      onTap: () => Get.to(NotificationScreen()),
-                    ),
+                      //notification icon
+                      imageIconButton(
+                        image: AppImage.notificationIcon,
+                        onTap: () => Get.to(NotificationScreen()),
+                      ),
 
-                    SizedBox(width: 8.w),
-                    //profile icon
-                    imageIconButton(
-                      image: AppImage.profileIcon,
-                      onTap: () => Get.to(EditProfileScreen()),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                //search Text Filed
-                // CommonTextfield(
-                //   controller: search,
-                //   hintText: AppString.search,
-                //   isShowSuffixIcon: AppImage.searchIcon,
-                // ),
-                CustomTextField(
-                  label: AppString.search,
-                  suffixIcon: AppImage.searchIcon,
-                  controller: search,
-                ),
-                SizedBox(height: 20.h),
-
-                //scheduler Poster
-                Container(
-                  height: 164.h,
-                  width: 325.w,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppImage.schedulePoster),
-                      fit: BoxFit.fill,
-                    ),
+                      SizedBox(width: 8.w),
+                      //profile icon
+                      imageIconButton(
+                        image: AppImage.profileIcon,
+                        onTap: () => Get.to(EditProfileScreen()),
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(height: 20.h),
-                //our Doctors
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppString.ourDoctors,
-                      style: TextStyleDecoration.labelMedium.copyWith(
-                        color: AppColor.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
+                  SizedBox(height: 20.h),
+                  //search Text Filed
+                  // CommonTextfield(
+                  //   controller: search,
+                  //   hintText: AppString.search,
+                  //   isShowSuffixIcon: AppImage.searchIcon,
+                  // ),
+                  CustomTextField(
+                    label: AppString.search,
+                    suffixIcon: AppImage.searchIcon,
+                    controller: search,
+                  ),
+                  SizedBox(height: 20.h),
+
+                  //scheduler Poster
+                  Container(
+                    height: 164.h,
+                    width: 325.w,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(AppImage.schedulePoster),
+                        fit: BoxFit.fill,
                       ),
                     ),
-                    imageIconButton(
-                      image: AppImage.detailsIcon,
+                  ),
+                  SizedBox(height: 20.h),
+                  //our Doctors
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppString.ourDoctors,
+                        style: TextStyleDecoration.labelMedium.copyWith(
+                          color: AppColor.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                      imageIconButton(
+                        image: AppImage.detailsIcon,
 
-                      height: 15.h,
-                      width: 15.h,
-                    ),
-                  ],
-                ),
-                // List of Doctors
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  padding: EdgeInsets.only(top: 10.h),
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return DoctorsDetailsWidget(
-                      image: AppImage.picImage,
-                      name: 'Dr. Maria Waston',
-                      reviews: '4.8 (2000 reviews)',
-                      details: 'Heart Surgeon, London, England',
-                      onTap: () => Get.to(() => DocDetailsScreen()),
-                    );
-                  },
-                ),
-              ],
+                        height: 15.h,
+                        width: 15.h,
+                      ),
+                    ],
+                  ),
+                  // List of Doctors
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.doctorList.length,
+                    padding: EdgeInsets.only(top: 10.h),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return DoctorsDetailsWidget(
+                        image:
+                            controller.doctorList[index].image ??
+                            AppImage.picImage,
+                        name: controller.doctorList[index].name ?? "",
+                        reviews: '4.8 (2000 reviews)',
+                        details: controller.doctorList[index].address ?? "",
+                        onTap:
+                            () => Get.to(
+                              () => DocDetailsScreen(
+                                id: controller.doctorList[index].id,
+                              ),
+                            ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
@@ -179,7 +195,9 @@ class DoctorsDetailsWidget extends StatelessWidget {
                   height: 54.w,
                   decoration: BoxDecoration(
                     color: AppColor.lightPinkColor,
-                    image: DecorationImage(image: AssetImage(image)),
+                    image: DecorationImage(
+                      image: AssetImage(AppImage.picImage),
+                    ),
                     borderRadius: BorderRadius.circular(17.96),
                   ),
                 ),

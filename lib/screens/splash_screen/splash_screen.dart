@@ -1,7 +1,10 @@
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
-import 'package:doc_o_doctor/constants/app_string.dart';
+import 'package:doc_o_doctor/constants/settings.dart';
+import 'package:doc_o_doctor/screens/about_yourself_screen/about_yourself_screen.dart';
+import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:doc_o_doctor/screens/login_screen/login_screen.dart';
+import 'package:doc_o_doctor/screens/medical_condition_screen/medical_condition_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,7 +23,17 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 4), () {
-      Get.off(() => LoginScreen());
+      if (Settings.isUserLoggedIn) {
+        if (Settings.step == "0") {
+          Get.off(() => AboutYourselfScreen());
+        } else if (Settings.step == "1") {
+          Get.off(() => MedicalConditionScreen());
+        } else {
+          Get.off(() => BottomNavBar());
+        }
+      } else {
+        Get.off(() => LoginScreen());
+      }
     });
   }
 

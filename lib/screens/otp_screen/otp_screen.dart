@@ -1,3 +1,4 @@
+import 'package:doc_o_doctor/constants/%20commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -17,6 +18,9 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.countryCode.value = countryCode;
+    controller.mobileNumber.value = mobileNo;
+    controller.otp.value = '';
     return Scaffold(
       backgroundColor: AppColor.white,
       body: SingleChildScrollView(
@@ -142,7 +146,7 @@ class OtpScreen extends StatelessWidget {
                     debugPrint("OTP entered: $verificationCode");
                     // Proceed with OTP verification
                     controller.otp.value = verificationCode;
-                    controller.verifyOTP();
+                    controller.verifyOTP(context);
                   }
                 }, // end onSubmit
               ),
@@ -174,7 +178,7 @@ class OtpScreen extends StatelessWidget {
                       ],
                     )
                     : TextButton(
-                      onPressed: controller.startResendTimer,
+                      onPressed: () => controller.resendOtp(context),
                       child: Text(
                         AppString.resentOtp,
                         style: TextStyle(
@@ -186,21 +190,20 @@ class OtpScreen extends StatelessWidget {
                     );
               }),
               SizedBox(height: 30.h),
-              commonButton(
-                onPressed: () {
-                  if (controller.otp.value.length == 6) {
-                    controller.verifyOTP();
-                  } else {
-                    /* Get.snackbar(
-                      "Error",
-                      "Please enter a valid 6-digit OTP",
-                      snackPosition: SnackPosition.BOTTOM,
-                    ); */
-                  }
-                },
-                text: AppString.submit,
-                width: 325.w,
-              ),
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return Center(child: Commonwidget.commonLoader());
+                }
+                return commonButton(
+                  onPressed: () {
+                    if (controller.otp.value.length == 6) {
+                      controller.verifyOTP(context);
+                    } else {}
+                  },
+                  text: AppString.submit,
+                  width: 325.w,
+                );
+              }),
             ],
           ),
         ),

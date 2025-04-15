@@ -1,4 +1,3 @@
-import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/screens/thank_you_screen/thank_you_screen.dart';
 import 'package:flutter/material.dart';
