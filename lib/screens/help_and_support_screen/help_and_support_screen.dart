@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
@@ -9,6 +9,7 @@ import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -41,101 +42,104 @@ class HelpAndSupportScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  /* SizedBox(height: 10.h),
-                  CustomTextField(
-                    controller: controller.ageController,
-                    keyboardType: TextInputType.numberWithOptions(),
-                    label: AppString.age,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty)
-                        return "Age is required";
-                      int? age = int.tryParse(value);
-                      if (age == null || age < 1 || age > 120)
-                        return "Enter a valid age (1-120)";
-                      return null;
-                    },
-                  ), */
+
                   SizedBox(height: 10.h),
-                  IntlPhoneField(
-                    controller: controller.phoneController,
-                    showDropdownIcon: true,
-                    flagsButtonMargin: EdgeInsets.only(left: 10.w),
-                    dropdownIconPosition: IconPosition.trailing,
-                    dropdownIcon: Icon(Icons.keyboard_arrow_down),
-                    showCountryFlag: false,
-                    decoration: InputDecoration(
-                      hintText: AppString.enterMobileNo,
-                      hintStyle: TextStyle(
-                        color: AppColor.grey,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      /* prefix: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(AppImage.keyboardDownArrow,
-                                      width: 10.w),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    '|',
-                                    style:
-                                        TextStyleDecoration.labelSmall.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      // color: AppColor.black,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                ],
-                              ), */
-                      contentPadding: EdgeInsets.only(left: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: BorderSide(
-                          color: AppColor.textFieldBorderColor,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: BorderSide(
-                          color: AppColor.textFieldBorderColor,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: BorderSide(
-                          color: AppColor.textFieldBorderColor,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7),
-                        borderSide: BorderSide(
-                          color: AppColor.textFieldBorderColor,
-                        ),
-                      ),
-                      // filled: true,
-                      fillColor: Colors.grey.shade100,
-                    ),
-                    initialCountryCode: 'IN',
+                  FormField<String>(
                     validator: (value) {
-                      if (value == null) return "Phone is required";
-
+                      if (controller.phoneController.text.trim().isEmpty) {
+                        return "Mobile number is required";
+                      }
+                      if (controller.phoneController.text.length < 10) {
+                        return "Enter a valid mobile number";
+                      }
                       return null;
                     },
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                    dropdownTextStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                    ),
-                    onChanged: (phone) {
-                      log('Number: ${phone.countryCode}');
+                    builder: (FormFieldState<String> field) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IntlPhoneField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            controller: controller.phoneController,
+                            showDropdownIcon: true,
+                            flagsButtonMargin: EdgeInsets.only(left: 10.w),
+                            dropdownIconPosition: IconPosition.trailing,
+                            dropdownIcon: Icon(Icons.keyboard_arrow_down),
+                            showCountryFlag: false,
+                            invalidNumberMessage: "",
 
-                      controller.countryCode = phone.completeNumber;
+                            cursorColor: AppColor.primaryColor,
+                            decoration: InputDecoration(
+                              hintText: AppString.enterMobileNo,
+                              hintStyle: TextStyleDecoration.labelSmall
+                                  .copyWith(
+                                    color: Colors.grey,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                              contentPadding: EdgeInsets.only(left: 10),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                            ),
+                            initialCountryCode: 'IN',
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                            dropdownTextStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            onChanged: (phone) {
+                              controller.countryCode.value = phone.countryCode;
+                              field.didChange(phone.completeNumber);
+                            },
+                          ),
+                          if (field.hasError)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                              ),
+                              child: Text(
+                                field.errorText ?? '',
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 177, 48, 39),
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
                     },
                   ),
                   /* CustomTextField(

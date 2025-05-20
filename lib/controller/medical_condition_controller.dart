@@ -1,4 +1,4 @@
-// import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+// import 'package:doc_o_doctor/constants/commonwidget.dart';
 // import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 // import 'package:file_picker/file_picker.dart';
 // import 'package:flutter/material.dart';
@@ -179,8 +179,10 @@
 //   // }
 // }
 
-import 'dart:io';
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+// ignore_for_file: depend_on_referenced_packages, avoid_print
+
+import 'package:doc_o_doctor/Model/loginModel.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/settings.dart';
 import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:doc_o_doctor/service/rest_services.dart';
@@ -188,10 +190,10 @@ import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+import 'package:path/path.dart' as p;
 
 class MedicalConditionController extends GetxController {
   final TextEditingController medicalProblemController =
@@ -201,15 +203,10 @@ class MedicalConditionController extends GetxController {
   var isMedicalUploadVisible = false.obs;
   var isReportUploadVisible = false.obs;
 
-  var medicalPdfs = <String>[].obs; // insurance
-  var reportPdfs = <String>[].obs; // report
+  RxList<String> medicalPdfs = <String>[].obs;
+  RxList<String> reportPdfs = <String>[].obs;
 
   var isLoading = false.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void dispose() {
@@ -217,31 +214,43 @@ class MedicalConditionController extends GetxController {
     super.dispose();
   }
 
-  /// Request storage permission
-  Future<bool> requestStoragePermission() async {
-    final currentStatus = await Permission.storage.status;
+  // /// Request storage permission
+  // Future<bool> requestStoragePermission() async {
+  //   if (Platform.isAndroid) {
+  //     final sdkInt = (await Permission.storage.status).androidSdkInt ?? 30;
 
-    if (currentStatus.isGranted) return true;
+  //     if (sdkInt >= 33) {
+  //       // Android 13 or newer – use media-specific permissions
+  //       final images = await Permission.photos.status;
+  //       if (!images.isGranted) {
+  //         final result = await Permission.photos.request();
+  //         if (!result.isGranted) {
+  //           Get.snackbar(
+  //             "Permission Denied",
+  //             "Media permission is required to pick a file.",
+  //           );
+  //           return false;
+  //         }
+  //       }
+  //     } else {
+  //       // Android 12 or below – traditional storage
+  //       final storage = await Permission.storage.status;
+  //       if (!storage.isGranted) {
+  //         final result = await Permission.storage.request();
+  //         if (!result.isGranted) {
+  //           Get.snackbar(
+  //             "Permission Denied",
+  //             "Storage permission is required to pick a file.",
+  //           );
+  //           return false;
+  //         }
+  //       }
+  //     }
+  //     return true;
+  //   }
 
-    final status = await Permission.storage.request();
-
-    if (status.isGranted) {
-      return true;
-    } else if (status.isPermanentlyDenied) {
-      Get.snackbar(
-        "Permission Denied",
-        "Storage permission is permanently denied. Please enable it from app settings.",
-      );
-      await openAppSettings();
-    } else {
-      Get.snackbar(
-        "Permission Denied",
-        "Storage permission is required to pick a file.",
-      );
-    }
-
-    return false;
-  }
+  //   return true; // iOS or other platforms
+  // }
 
   /// Toggle UI
   void toggleMedicalUpload() {
@@ -254,8 +263,6 @@ class MedicalConditionController extends GetxController {
 
   /// Pick PDFs
   Future<void> pickMedicalPdfs() async {
-    if (!await requestStoragePermission()) return;
-
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -263,12 +270,22 @@ class MedicalConditionController extends GetxController {
         allowMultiple: true,
       );
 
-      if (result != null && result.files.isNotEmpty) {
-        medicalPdfs.value =
-            result.files
-                .where((file) => file.path != null)
-                .map((e) => e.path!)
-                .toList();
+      if (result != null) {
+        for (String path in result.paths.whereType<String>()) {
+          String fileName = p.basename(path);
+
+          bool alreadyExists = medicalPdfs.any(
+            (existingPath) => p.basename(existingPath) == fileName,
+          );
+
+          if (!alreadyExists) {
+            medicalPdfs.add(path);
+          } else {
+            Commonwidget.showErrorSnackbar(
+              message: "You've already added this file.",
+            );
+          }
+        }
       }
     } catch (e) {
       print("Error picking medical PDFs: $e");
@@ -276,8 +293,6 @@ class MedicalConditionController extends GetxController {
   }
 
   Future<void> pickReportPdfs() async {
-    if (!await requestStoragePermission()) return;
-
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -285,12 +300,22 @@ class MedicalConditionController extends GetxController {
         allowMultiple: true,
       );
 
-      if (result != null && result.files.isNotEmpty) {
-        reportPdfs.value =
-            result.files
-                .where((file) => file.path != null)
-                .map((e) => e.path!)
-                .toList();
+      if (result != null) {
+        for (String path in result.paths.whereType<String>()) {
+          String fileName = p.basename(path);
+
+          bool alreadyExists = reportPdfs.any(
+            (existingPath) => p.basename(existingPath) == fileName,
+          );
+
+          if (!alreadyExists) {
+            reportPdfs.add(path);
+          } else {
+            Commonwidget.showErrorSnackbar(
+              message: "You've already added this file.",
+            );
+          }
+        }
       }
     } catch (e) {
       print("Error picking report PDFs: $e");
@@ -309,6 +334,18 @@ class MedicalConditionController extends GetxController {
   var service = Get.find<RestService>();
 
   Future<void> uploadMedicalCondition(BuildContext context) async {
+    if (medicalPdfs.isEmpty) {
+      return Commonwidget.showErrorSnackbar(
+        message: "Please select an insurance PDF.",
+      );
+    }
+
+    if (reportPdfs.isEmpty) {
+      return Commonwidget.showErrorSnackbar(
+        message: "Please select a medical report PDF.",
+      );
+    }
+
     if (!formKey.currentState!.validate()) return;
 
     var connection = await Commonwidget.checkConnectivity();
@@ -348,7 +385,10 @@ class MedicalConditionController extends GetxController {
       var response = await service.postMultipart(
         path: ServiceConfiguration.medicalCondition,
         method: "POST",
-        fields: {"medicalProblem": medicalProblemController.text},
+        fields: {
+          "medicalProblem": medicalProblemController.text,
+          "sendNotification": false,
+        },
         files: allFiles,
       );
 
@@ -368,6 +408,36 @@ class MedicalConditionController extends GetxController {
       Commonwidget.showErrorSnackbar(message: "Something went wrong.");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> skipForNow() async {
+    try {
+      var connection = await Commonwidget.checkConnectivity();
+      if (!connection) return;
+      isLoading.value = true;
+      SkipForNowModel skipForNowModel = SkipForNowModel();
+
+      skipForNowModel.step = 2;
+
+      var result = await service.skipForNow(skipForNowModel);
+
+      if (result.status ?? false) {
+        Commonwidget.showSuccessSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+        Settings.step = "2";
+        Get.off(() => BottomNavBar());
+        isLoading.value = false;
+      } else {
+        isLoading.value = false;
+        Commonwidget.showErrorSnackbar(
+          message: result.message ?? ServiceConfiguration.commonErrorMessage,
+        );
+      }
+    } catch (e) {
+      isLoading.value = false;
+      debugPrint("ERROR :- ${e.toString()}");
     }
   }
 }

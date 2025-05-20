@@ -1,9 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:doc_o_doctor/Model/addFamilyMemberModel.dart';
+import 'package:doc_o_doctor/Model/bookNowModel.dart';
+import 'package:doc_o_doctor/Model/documentModel.dart';
 import 'package:doc_o_doctor/Model/helpAndSupport.dart';
 import 'package:doc_o_doctor/Model/homeModel.dart';
 import 'package:doc_o_doctor/Model/loginModel.dart';
+import 'package:doc_o_doctor/Model/profileModel.dart';
 import 'package:doc_o_doctor/constants/settings.dart';
+import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
 import 'package:doc_o_doctor/screens/login_screen/login_screen.dart';
 import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:flutter/foundation.dart';
@@ -122,25 +127,25 @@ class RestService {
     }
   }
 
-  // Future<MessageAndStatus> fcmRequest(DeviceTokenRequestModel value) async {
-  //   MessageAndStatus result = MessageAndStatus();
-  //   try {
-  //     var response = await getResponse(
-  //       path: ServiceConfiguration.deviceToken,
-  //       method: Method.post,
-  //       body: json.encode(value),
-  //     );
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       result = MessageAndStatus.fromJson(json.decode(response.body));
-  //     } else {
-  //       result.message ?? ServiceConfiguration.commonErrorMessage;
-  //     }
-  //     return result;
-  //   } catch (e) {
-  //     result.message = e.toString();
-  //     return result;
-  //   }
-  // }
+  Future<MessageAndStatus> fcmRequest(DeviceTokenRequestModel value) async {
+    MessageAndStatus result = MessageAndStatus();
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.deviceToken,
+        method: Method.post,
+        body: json.encode(value),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ?? ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
 
   Future<OtpVerifierResponseModel> otpVerifier(
     OtpVerifierRequestModel value,
@@ -184,6 +189,37 @@ class RestService {
     }
   }
 
+  Future<MessageAndStatus> addFamilyMember(
+    AddFamilyMemberRequestModel value, {
+    int? id,
+  }) async {
+    MessageAndStatus result = MessageAndStatus();
+    try {
+      String url = "";
+
+      if (id == 0 || id == null) {
+        url = ServiceConfiguration.addFamilyMember;
+      } else {
+        url = "${ServiceConfiguration.editFamilyMember}$id";
+      }
+
+      var response = await getResponse(
+        path: url,
+        method: Method.post,
+        body: json.encode(value),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
   Future<MessageAndStatus> logOut() async {
     MessageAndStatus result = MessageAndStatus();
     try {
@@ -196,6 +232,86 @@ class RestService {
         Get.offAll(() => LoginScreen());
         Settings.clear();
         result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ?? ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<MessageAndStatus> deleteFamilyMember(int id) async {
+    MessageAndStatus result = MessageAndStatus();
+    try {
+      var response = await getResponse(
+        path: "${ServiceConfiguration.deleteFamilyMember}$id",
+        method: Method.delete,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ?? ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<MessageAndStatus> deleteDocument(int id) async {
+    MessageAndStatus result = MessageAndStatus();
+    try {
+      var response = await getResponse(
+        path: "${ServiceConfiguration.deletedocument}$id",
+        method: Method.delete,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ?? ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<DocumentsResponseModel> getDocuments() async {
+    DocumentsResponseModel result = DocumentsResponseModel();
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.getDocument,
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = DocumentsResponseModel.fromJson(json.decode(response.body));
+      } else {
+        result.message ?? ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<FamilyMemberResponsModel> getFamilyMember() async {
+    FamilyMemberResponsModel result = FamilyMemberResponsModel();
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.listfamilymember,
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = FamilyMemberResponsModel.fromJson(json.decode(response.body));
       } else {
         result.message ?? ServiceConfiguration.commonErrorMessage;
       }
@@ -226,36 +342,121 @@ class RestService {
     }
   }
 
-  // Future<ProfileResponseModel> getProfile() async {
-  //   ProfileResponseModel result = ProfileResponseModel();
-  //   try {
-  //     var response = await getResponse(
-  //       path: ServiceConfiguration.profile,
-  //       method: Method.get,
-  //       body: json.encode(""),
-  //     );
-  //     if (response.statusCode == HttpStatus.ok) {
-  //       result = ProfileResponseModel.fromJson(json.decode(response.body));
-  //     } else {
-  //       result.message ?? ServiceConfiguration.commonErrorMessage;
-  //     }
-  //     return result;
-  //   } catch (e) {
-  //     result.message = e.toString();
-  //     return result;
-  //   }
-  // }
-
-  Future<DoctorListResponseModel> getDoctorList() async {
-    DoctorListResponseModel result = DoctorListResponseModel();
+  Future<BookAppoinmentReponerseedModel> bookAppoinment(
+    BookAppoinmentRequestdModel value,
+  ) async {
+    print(jsonEncode(value));
+    BookAppoinmentReponerseedModel result = BookAppoinmentReponerseedModel();
     try {
       var response = await getResponse(
-        path: ServiceConfiguration.doctorList,
+        path: ServiceConfiguration.bookAppoinment,
+        method: Method.post,
+        body: json.encode(value),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = BookAppoinmentReponerseedModel.fromJson(
+          json.decode(response.body),
+        );
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<AvailableSlotResponseModel> availableSlot(
+    AvailableSlotRequestModel value,
+  ) async {
+    AvailableSlotResponseModel result = AvailableSlotResponseModel();
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.availableSlot,
+        method: Method.post,
+        body: json.encode(value),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = AvailableSlotResponseModel.fromJson(
+          json.decode(response.body),
+        );
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<ProfileResponseModel> getProfile() async {
+    ProfileResponseModel result = ProfileResponseModel();
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.profile,
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = ProfileResponseModel.fromJson(json.decode(response.body));
+      } else {
+        result.message ?? ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<DoctorListResponseModel> getDoctorList({
+    int? serviceId,
+    int? rating,
+  }) async {
+    DoctorListResponseModel result = DoctorListResponseModel();
+    String path = "";
+
+    if (serviceId == null && rating == null) {
+      path = ServiceConfiguration.doctorList;
+    } else if (serviceId != null && rating == null) {
+      path = "${ServiceConfiguration.doctorList}?serviceId=$serviceId";
+    } else if (serviceId == null && rating != null) {
+      path = "${ServiceConfiguration.doctorList}?rate=$rating";
+    } else {
+      path =
+          "${ServiceConfiguration.doctorList}?serviceId=$serviceId&rate=$rating";
+    }
+    debugPrint("Doctor List URL: $path");
+    try {
+      var response = await getResponse(
+        path: path,
         method: Method.get,
         body: json.encode(""),
       );
       if (response.statusCode == HttpStatus.ok) {
         result = DoctorListResponseModel.fromJson(json.decode(response.body));
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<FamilyDoctorResponseModel> getFamilyDoctorList() async {
+    FamilyDoctorResponseModel result = FamilyDoctorResponseModel();
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.getFamilyDoctor,
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = FamilyDoctorResponseModel.fromJson(json.decode(response.body));
       } else {
         result.message ??= ServiceConfiguration.commonErrorMessage;
       }
@@ -278,6 +479,115 @@ class RestService {
       );
       if (response.statusCode == HttpStatus.ok) {
         result = DoctorDetailResponseModel.fromJson(json.decode(response.body));
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<MessageAndStatus> skipForNow(SkipForNowModel value) async {
+    MessageAndStatus result = MessageAndStatus();
+
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.skipForNow,
+        method: Method.post,
+        body: json.encode(value),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<MessageAndStatus> addFamilyMemberdoctor(int id) async {
+    MessageAndStatus result = MessageAndStatus();
+
+    try {
+      var response = await getResponse(
+        path: "${ServiceConfiguration.addAsfamilydoctor}$id",
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<BookingListResponseModel> getBookingList() async {
+    BookingListResponseModel result = BookingListResponseModel();
+
+    try {
+      var response = await getResponse(
+        path: ServiceConfiguration.getBokingAppoinments,
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = BookingListResponseModel.fromJson(json.decode(response.body));
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<BookingDetailsResponseModel> getBookingDetail({
+    required int id,
+  }) async {
+    BookingDetailsResponseModel result = BookingDetailsResponseModel();
+
+    try {
+      var response = await getResponse(
+        path: "${ServiceConfiguration.getappoinmentDetails}$id",
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = BookingDetailsResponseModel.fromJson(
+          json.decode(response.body),
+        );
+      } else {
+        result.message ??= ServiceConfiguration.commonErrorMessage;
+      }
+      return result;
+    } catch (e) {
+      result.message = e.toString();
+      return result;
+    }
+  }
+
+  Future<MessageAndStatus> cancelAppoinment({required int id}) async {
+    MessageAndStatus result = MessageAndStatus();
+
+    try {
+      var response = await getResponse(
+        path: "${ServiceConfiguration.cancelAppoinment}$id",
+        method: Method.get,
+        body: json.encode(""),
+      );
+      if (response.statusCode == HttpStatus.ok) {
+        result = MessageAndStatus.fromJson(json.decode(response.body));
       } else {
         result.message ??= ServiceConfiguration.commonErrorMessage;
       }

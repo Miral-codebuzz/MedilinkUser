@@ -1,9 +1,11 @@
 import 'dart:isolate';
 
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
-import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
+import 'package:doc_o_doctor/screens/booking_screen/bookingController.dart';
+import 'package:doc_o_doctor/screens/booking_screen/details_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -15,40 +17,67 @@ class BookingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Bookingcontroller controller = Get.put(Bookingcontroller());
+    controller.getBookingList();
     return Scaffold(
       backgroundColor: AppColor.white,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              appBarWidget(
-                title: AppString.appiontments,
-                showBackIcon: isShowBackIcon,
-              ),
-              SizedBox(height: 20),
-              Expanded(
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return CustomAppoinmentContainer(
-                      image: AppImage.picImage,
-                      name: 'Dr. Maria Watson',
-                      expert: 'Cardio Specialist',
-                      date: 'Wednesday, 12 March 2025',
-                      time: '11:00 - AM',
-                      onTap: () => Get.to(() => DocDetailsScreen()),
-                    );
-                  },
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: Commonwidget.commonLoader());
+        }
+
+        if (controller.bookingList.isEmpty) {
+          return Center(child: CustomText(text: "No data found"));
+        }
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                appBarWidget(
+                  title: AppString.appiontments,
+                  showBackIcon: isShowBackIcon,
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                Expanded(
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: controller.bookingList.length,
+                    itemBuilder: (context, index) {
+                      final doctor = controller.bookingList.value[index];
+                      return CustomAppoinmentContainer(
+                        image: doctor.image ?? "",
+                        name: doctor.name ?? 'Dr. Maria Watson',
+                        expert: doctor.doctorJobTitle ?? 'Cardio Specialist',
+                        date: doctor.date ?? 'Wednesday, 12 March 2025',
+                        time: doctor.availableTime ?? '11:00 - AM',
+                        status: doctor.status ?? "Reject",
+                        statusColor: Colors.red,
+                        onTap:
+                            () => Get.to(
+                              () => DetailsScreen(doctorId: doctor.id ?? 0),
+                            ),
+                      );
+                      // return CustomAppoinmentContainer(
+                      //   image: "",
+                      //   name: 'Dr. Maria Watson',
+                      //   expert: 'Cardio Specialist',
+                      //   date: 'Wednesday, 12 March 2025',
+                      //   time: '11:00 - AM',
+                      //   status: "Reject",
+                      //   statusColor: Colors.red,
+                      //   onTap: () => Get.to(() => DetailsScreen(doctorId: 0)),
+                      // );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
@@ -59,6 +88,8 @@ class CustomAppoinmentContainer extends StatelessWidget {
   final String expert;
   final String date;
   final String time;
+  final String status;
+  final Color statusColor;
   final void Function()? onTap;
   const CustomAppoinmentContainer({
     super.key,
@@ -66,6 +97,8 @@ class CustomAppoinmentContainer extends StatelessWidget {
     required this.name,
     required this.expert,
     required this.date,
+    required this.status,
+    required this.statusColor,
     required this.time,
     this.onTap,
   });
@@ -75,7 +108,7 @@ class CustomAppoinmentContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: Container(
-        height: 178,
+        height: 200,
         decoration: BoxDecoration(
           border: Border.all(color: AppColor.lightGrey),
           borderRadius: BorderRadius.circular(11),
@@ -84,15 +117,46 @@ class CustomAppoinmentContainer extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 19),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color:
+                        status == "pending"
+                            ? Colors.amber.withOpacity(0.1)
+                            : status == "accepted"
+                            ? Color(0xFF313131).withOpacity(0.1)
+                            : Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0,
+                      vertical: 4.0,
+                    ),
+                    child: Commonwidget.commonText(
+                      text: status,
+                      color:
+                          status == "pending"
+                              ? Colors.amber
+                              : status == "accepted"
+                              ? Color(0xFF313131)
+                              : Colors.red,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ),
               Row(
                 children: [
                   Container(
+                    width: 54,
                     height: 54,
-                    width: 53,
                     decoration: BoxDecoration(
-                      color: AppColor.grey,
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(image: AssetImage(image)),
+                      color: AppColor.lightPinkColor,
+                      image: DecorationImage(image: NetworkImage(image)),
+                      borderRadius: BorderRadius.circular(17.96),
                     ),
                   ),
                   SizedBox(width: 9),

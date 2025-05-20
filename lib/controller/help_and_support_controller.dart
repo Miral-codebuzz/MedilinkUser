@@ -1,5 +1,5 @@
 import 'package:doc_o_doctor/Model/helpAndSupport.dart';
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/service/rest_services.dart';
 import 'package:doc_o_doctor/service/service_configuration.dart';
@@ -46,7 +46,7 @@ class HelpAndSupportController extends GetxController {
   }
 
   var isLoading = false.obs;
-  var countryCode = "+91";
+  var countryCode = "+91".obs;
   var service = Get.find<RestService>();
 
   Future<void> helpAndSupport() async {

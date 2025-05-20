@@ -26,6 +26,9 @@ class AppImage {
   static const String locationIcon = "$basePath/location_icon.png";
   static const String patientsIcon = "$basePath/patients_icon.png";
   static const String successIcon = "$basePath/success_icon.png";
+  static const String edit = "$basePath/edit.png";
+  static const String delete = "$basePath/delete.png";
+  static const String fDoctor = "$basePath/fDoctor.png";
   static const String emptyNotification =
       "$basePath/empty_notification_icon.png";
   static const String helpAndSupportIcon =
@@ -38,4 +41,9 @@ class AppImage {
   static const String clockIcon = "$basePath/clock_icon.png";
   static const String keyboardDownArrow = "$basePath/keyboard_down_arrow.png";
   static const String downArrow = "$basePath/dropDown.png";
+  static const String document = "$basePath/document.png";
+  static const String fulls = "$basePath/fullF.png";
+  static const String fullw = "$basePath/ws.png";
+  static const String halfs = "$basePath/halfS.png";
+  static const String history = "$basePath/history.png";
 }

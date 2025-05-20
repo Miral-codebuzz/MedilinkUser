@@ -3,6 +3,7 @@ import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool isDropdown;
   final List<String>? dropdownItems;
+  final List<TextInputFormatter>? inputFormatters;
   final RxnString? selectedDropdown;
   final void Function(String?)? onDropdownChanged;
   final Widget? prefixIcon;
@@ -22,6 +24,7 @@ class CustomTextField extends StatelessWidget {
   final void Function()? suffixIconOnTap;
   final bool readOnly;
   final void Function(String)? onChanged;
+  final void Function()? onTap;
 
   const CustomTextField({
     super.key,
@@ -40,6 +43,8 @@ class CustomTextField extends StatelessWidget {
     this.suffixIconOnTap,
     this.readOnly = false,
     this.onChanged,
+    this.inputFormatters,
+    this.onTap,
   });
 
   @override
@@ -51,27 +56,28 @@ class CustomTextField extends StatelessWidget {
         isDropdown
             ? Obx(
               () => DropdownButtonFormField<String>(
-                value: selectedDropdown?.value,
+                value:
+                    (dropdownItems != null &&
+                            dropdownItems!.contains(selectedDropdown?.value))
+                        ? selectedDropdown?.value
+                        : null,
                 style: TextStyleDecoration.labelMedium.copyWith(
                   color: AppColor.black,
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
                 ),
+                dropdownColor: Colors.white,
                 decoration: InputDecoration(
-                  filled: true, // <--- Re-enable filled property
+                  filled: true,
                   fillColor: Colors.grey.shade100,
                   label: Text(
-                    (selectedDropdown?.value != null &&
-                            selectedDropdown!.value!.isNotEmpty)
-                        ? ""
-                        : label,
+                    label,
                     style: TextStyleDecoration.labelMedium.copyWith(
                       color: AppColor.grey,
                       fontWeight: FontWeight.w400,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -105,9 +111,8 @@ class CustomTextField extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 items:
-                    dropdownItems?.map((String value) {
+                    dropdownItems?.toSet().map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -122,8 +127,10 @@ class CustomTextField extends StatelessWidget {
               keyboardType: keyboardType,
               maxLines: maxLine,
               validator: validator,
+              inputFormatters: inputFormatters ?? [],
               readOnly: readOnly,
               maxLength: maxLength,
+              onTap: onTap,
               onChanged: onChanged,
               style: TextStyleDecoration.labelMedium.copyWith(
                 color: AppColor.black,

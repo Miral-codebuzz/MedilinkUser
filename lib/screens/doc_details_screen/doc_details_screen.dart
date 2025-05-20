@@ -1,4 +1,4 @@
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -28,8 +28,8 @@ class DocDetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.white,
       bottomNavigationBar: Obx(() {
-        if (controller.isLoading.value) {
-          return Container();
+        if (controller.isBookNow.value) {
+          return Center(child: Commonwidget.commonLoader());
         }
         return Container(
           margin: EdgeInsets.all(10),
@@ -41,7 +41,7 @@ class DocDetailsScreen extends StatelessWidget {
               commonButton(
                 text: AppString.bookNow,
                 onPressed: () {
-                  Get.to(() => BookAppointmentScreen());
+                  Get.to(() => BookAppointmentScreen(id: id ?? 0));
                 },
               ),
               // add As Family Doctor button
@@ -50,7 +50,7 @@ class DocDetailsScreen extends StatelessWidget {
                 bgColor: AppColor.lightGrey,
                 textColor: AppColor.black,
                 onPressed: () {
-                  Get.to(() => AddFamilyMemberScreen());
+                  controller.addFamilyMemberdoctor(id ?? 0);
                 },
               ),
             ],
@@ -82,7 +82,9 @@ class DocDetailsScreen extends StatelessWidget {
                     width: 87.w,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(AppImage.picImage),
+                        image: NetworkImage(
+                          controller.doctorDetail.value?.image ?? '',
+                        ),
                         fit: BoxFit.cover,
                       ),
                       color: AppColor.lightPinkColor,
@@ -99,28 +101,33 @@ class DocDetailsScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 10.h),
-                  //reviews
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AppImage.starIcon,
-                        height: 14.36.h,
-                        width: 15.26.w,
-                      ),
-                      SizedBox(width: 5.w),
-                      //reviews
-                      Text(
-                        '4.8 (2000 reviews)',
-                        style: TextStyleDecoration.labelSmall.copyWith(
-                          color: AppColor.textGrey.withValues(alpha: 0.6),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10,
+                  if (controller.doctorDetail.value?.averageRating != null) ...[
+                    SizedBox(height: 10.h),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppImage.starIcon,
+                          height: 14.36.h,
+                          width: 15.26.w,
                         ),
-                      ),
-                    ],
-                  ),
+
+                        SizedBox(width: 5.w),
+
+                        Text(
+                          controller.doctorDetail.value?.averageRating
+                                  .toString() ??
+                              '4.5',
+                          style: TextStyleDecoration.labelSmall.copyWith(
+                            color: AppColor.textGrey.withValues(alpha: 0.6),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                   SizedBox(height: 10.h),
                   //specialist
                   Row(
@@ -171,34 +178,41 @@ class DocDetailsScreen extends StatelessWidget {
                         width: width * 0.27,
                         iconImage: AppImage.patientsIcon,
                         title: AppString.patients,
-                        subTitle: '1000 +',
+                        subTitle:
+                            controller.doctorDetail.value?.totalPatients ??
+                            '1000 +',
                       ),
                     ],
                   ),
                   SizedBox(height: 20.h),
-                  Row(
-                    children: [
-                      //About Doctor
-                      Text(
-                        AppString.aboutdoctor,
+                  if (controller.doctorDetail.value?.aboutDoctor != null) ...[
+                    Row(
+                      children: [
+                        //About Doctor
+                        Text(
+                          AppString.aboutdoctor,
+                          style: TextStyleDecoration.labelLarge.copyWith(
+                            color: AppColor.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    //about doctor details
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        controller.doctorDetail.value?.aboutDoctor ?? "",
                         style: TextStyleDecoration.labelLarge.copyWith(
-                          color: AppColor.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                          color: AppColor.grey,
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  //about doctor details
-                  Text(
-                    'Dr. Maria Watson is the top most Cardiologist specialist in Nanyang Hospitalet London. She is available for private consultation. Whether it’s a routine check-up or urgent medical assistance, we are here to support your well-being.Dr. Maria Watson is the top most Cardiologist specialist in Nanyang Hospitalet London. She is available for private consultation. Whether it’s a routine check-up or urgent medical assistance, we are here to support your well-being. ',
-                    style: TextStyleDecoration.labelLarge.copyWith(
-                      color: AppColor.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:doc_o_doctor/Model/homeModel.dart';
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/service/rest_services.dart';
 import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +16,15 @@ class Homecontroller extends GetxController {
     getDoctorList();
   }
 
-  Future<void> getDoctorList() async {
+  Future<void> getDoctorList({int? serviceId, int? reating}) async {
     try {
       var connection = await Commonwidget.checkConnectivity();
       if (!connection) return;
       isLoading.value = true;
-      var result = await service.getDoctorList();
+      var result = await service.getDoctorList(
+        serviceId: serviceId,
+        rating: reating,
+      );
 
       if (result.status ?? false) {
         doctorList.value = result.data ?? [];

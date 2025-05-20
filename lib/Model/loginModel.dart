@@ -11,29 +11,37 @@ class MessageAndStatus {
 }
 
 class RegisterRequest {
-  String? mobileNumber;
+  String? email;
 
-  RegisterRequest({this.mobileNumber});
+  RegisterRequest({this.email});
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
-      RegisterRequest(mobileNumber: json["mobileNumber"]);
+      RegisterRequest(email: json["email"]);
 
-  Map<String, dynamic> toJson() => {"mobileNumber": mobileNumber};
+  Map<String, dynamic> toJson() => {"email": email};
+}
+
+class SkipForNowModel {
+  int? step;
+
+  SkipForNowModel({this.step});
+
+  factory SkipForNowModel.fromJson(Map<String, dynamic> json) =>
+      SkipForNowModel(step: json["step"]);
+
+  Map<String, dynamic> toJson() => {"step": step};
 }
 
 class OtpVerifierRequestModel {
-  String? mobileNumber;
+  String? email;
   String? otp;
 
-  OtpVerifierRequestModel({this.mobileNumber, this.otp});
+  OtpVerifierRequestModel({this.email, this.otp});
 
   factory OtpVerifierRequestModel.fromJson(Map<String, dynamic> json) =>
-      OtpVerifierRequestModel(
-        mobileNumber: json["mobileNumber"],
-        otp: json["otp"],
-      );
+      OtpVerifierRequestModel(email: json["email"], otp: json["otp"]);
 
-  Map<String, dynamic> toJson() => {"mobileNumber": mobileNumber, "otp": otp};
+  Map<String, dynamic> toJson() => {"email": email, "otp": otp};
 }
 
 class OtpVerifierResponseModel {
@@ -144,16 +152,20 @@ class Authentication {
 class TellAboutSelfRequest {
   String? name;
   String? gender;
+  String? mobileNumber;
   String? dateOfBirth;
   String? address;
+  String? age;
   String? city;
   String? country;
 
   TellAboutSelfRequest({
     this.name,
     this.gender,
+    this.mobileNumber,
     this.dateOfBirth,
     this.address,
+    this.age,
     this.city,
     this.country,
   });
@@ -162,18 +174,22 @@ class TellAboutSelfRequest {
       TellAboutSelfRequest(
         name: json["name"],
         gender: json["gender"],
+        mobileNumber: json["mobileNumber"],
         dateOfBirth: json["dateOfBirth"],
         address: json["address"],
         city: json["city"],
+        age: json["age"],
         country: json["country"],
       );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "gender": gender,
+    "mobileNumber": mobileNumber,
     "dateOfBirth": dateOfBirth,
     "address": address,
     "city": city,
+    "age": age,
     "country": country,
   };
 }

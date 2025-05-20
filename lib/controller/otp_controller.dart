@@ -1,9 +1,11 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:doc_o_doctor/Model/loginModel.dart';
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/settings.dart';
 import 'package:doc_o_doctor/screens/about_yourself_screen/about_yourself_screen.dart';
 import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:doc_o_doctor/screens/medical_condition_screen/medical_condition_screen.dart';
+import 'package:doc_o_doctor/screens/notification_screen/notificationController.dart';
 import 'package:doc_o_doctor/service/rest_services.dart';
 import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:flutter/foundation.dart';
@@ -14,8 +16,10 @@ class OtpController extends GetxController {
   var resendTime = 59.obs;
   var isResendActive = false.obs;
   var service = Get.find<RestService>();
-  var countryCode = "".obs;
-  var mobileNumber = "".obs;
+  final Notificationcontroller notificationcontroller = Get.put(
+    Notificationcontroller(),
+  );
+  var email = "".obs;
   @override
   void onInit() {
     startResendTimer();
@@ -58,8 +62,7 @@ class OtpController extends GetxController {
       isLoading.value = true;
       OtpVerifierRequestModel otpVerifierRequestModel =
           OtpVerifierRequestModel();
-      otpVerifierRequestModel.mobileNumber =
-          "${countryCode.value} ${mobileNumber.value}";
+      otpVerifierRequestModel.email = email.value;
       otpVerifierRequestModel.otp = otp.value;
 
       var result = await service.otpVerifier(otpVerifierRequestModel);
@@ -79,6 +82,37 @@ class OtpController extends GetxController {
         print(Settings.step);
         print(Settings.accessToken);
         print(Settings.isUserLoggedIn);
+
+        final fcmToken = notificationcontroller.token.value;
+
+        if (fcmToken.isNotEmpty) {
+          final deviceInfo = DeviceInfoPlugin();
+          String deviceId = "unknown";
+          String deviceType = "unknown";
+
+          try {
+            if (GetPlatform.isAndroid) {
+              final androidInfo = await deviceInfo.androidInfo;
+              deviceId = androidInfo.id;
+              deviceType = "Android";
+            } else if (GetPlatform.isIOS) {
+              final iosInfo = await deviceInfo.iosInfo;
+              deviceId = iosInfo.identifierForVendor ?? "unknown";
+              deviceType = "iOS";
+            }
+          } catch (e) {
+            debugPrint("Error getting device info: $e");
+          }
+
+          notificationcontroller.sendTokenToServer(
+            context,
+            fcmToken: fcmToken,
+            deviceId: deviceId,
+            deviceType: deviceType,
+          );
+        } else {
+          debugPrint("FCM token is empty");
+        }
 
         if (Settings.step == "0") {
           Get.off(() => AboutYourselfScreen());
@@ -105,8 +139,7 @@ class OtpController extends GetxController {
       if (!connection) return;
 
       RegisterRequest registerRequest = RegisterRequest();
-      registerRequest.mobileNumber =
-          "${countryCode.value} ${mobileNumber.value}";
+      registerRequest.email = email.value;
 
       var result = await service.registerMobileNumber(registerRequest);
 

@@ -89,7 +89,7 @@ class BottomNavBar extends StatelessWidget {
             ),
             _buildNavItem(
               imagePath: AppImage.bookingIcon,
-              label: AppString.booking,
+              label: "Appointments",
               index: 1,
             ),
             _buildNavItem(

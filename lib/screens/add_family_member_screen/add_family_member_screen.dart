@@ -1,3 +1,4 @@
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -7,17 +8,44 @@ import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class AddFamilyMemberScreen extends StatelessWidget {
-  const AddFamilyMemberScreen({super.key});
+  final String? name;
+  final String? gender;
+  final String? dateOfBirth;
+  final String? mobileNo;
+  final String? relation;
+  final int? doctorId;
+
+  const AddFamilyMemberScreen({
+    super.key,
+    this.name,
+    this.gender,
+    this.dateOfBirth,
+    this.mobileNo,
+    this.relation,
+    this.doctorId,
+  });
 
   @override
   Widget build(BuildContext context) {
     final AddFamilyMemberController controller = Get.put(
       AddFamilyMemberController(),
     );
+
+    controller.nameController.text = name ?? "";
+    controller.selectedGender.value = gender ?? "";
+    controller.dobController.text = dateOfBirth ?? "";
+    if (mobileNo != null && mobileNo!.contains(' ')) {
+      final parts = mobileNo!.split(' ');
+      controller.countryCode.value = parts[0];
+      controller.phoneController.text = parts[1];
+    }
+    controller.relationController.text = relation ?? "";
 
     return Scaffold(
       backgroundColor: AppColor.white,
@@ -41,37 +69,103 @@ class AddFamilyMemberScreen extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 10.h),
-                  CustomTextField(
-                    controller: controller.phoneController,
-                    label: AppString.enterMobileNo,
-                    keyboardType: TextInputType.phone,
-                    maxLength: 10,
-                    prefixIcon: Container(
-                      width: 50.w,
-                      margin: EdgeInsets.only(left: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "+91",
-                            style: TextStyleDecoration.labelMedium.copyWith(
-                              color: AppColor.black,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          Icon(Icons.keyboard_arrow_down_outlined),
-                        ],
-                      ),
-                    ),
+                  FormField<String>(
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
-                        return "Phone is required";
-                      if (!RegExp(r'^[0-9]{10}$').hasMatch(value))
-                        return "Enter a valid 10-digit phone number";
+                      if (controller.phoneController.text.trim().isEmpty) {
+                        return "Mobile number is required";
+                      }
+                      if (controller.phoneController.text.length < 10) {
+                        return "Enter a valid mobile number";
+                      }
                       return null;
                     },
+                    builder: (FormFieldState<String> field) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IntlPhoneField(
+                            controller: controller.phoneController,
+                            showDropdownIcon: true,
+                            flagsButtonMargin: EdgeInsets.only(left: 10.w),
+                            dropdownIconPosition: IconPosition.trailing,
+                            dropdownIcon: Icon(Icons.keyboard_arrow_down),
+                            showCountryFlag: false,
+                            invalidNumberMessage: "",
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            cursorColor: AppColor.primaryColor,
+                            decoration: InputDecoration(
+                              hintText: AppString.enterMobileNo,
+                              hintStyle: TextStyleDecoration.labelSmall
+                                  .copyWith(
+                                    color: Colors.grey,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                              contentPadding: EdgeInsets.only(left: 10),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(7),
+                                borderSide: BorderSide(
+                                  color: AppColor.textFieldBorderColor,
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                            ),
+                            initialCountryCode: 'IN',
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                            dropdownTextStyle: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                            onChanged: (phone) {
+                              controller.countryCode.value = phone.countryCode;
+                              field.didChange(phone.completeNumber);
+                            },
+                          ),
+                          if (field.hasError)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                              ),
+                              child: Text(
+                                field.errorText ?? '',
+                                style: TextStyle(
+                                  color: const Color.fromARGB(255, 177, 48, 39),
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
+
                   SizedBox(height: 10.h),
                   CustomTextField(
                     label: AppString.gender,
@@ -81,8 +175,8 @@ class AddFamilyMemberScreen extends StatelessWidget {
                     onDropdownChanged: (String? value) {
                       controller.selectedGender.value = value!;
                     },
-                    validator: (value) =>
-                        value == null ? "Select a Gender" : null,
+                    validator:
+                        (value) => value == null ? "Select a Gender" : null,
                   ),
                   SizedBox(height: 10),
                   CustomTextField(
@@ -107,17 +201,24 @@ class AddFamilyMemberScreen extends StatelessWidget {
                     label: AppString.relation,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty)
+                        // ignore: curly_braces_in_flow_control_structures
                         return "Relation is required";
                       return null;
                     },
                   ),
                   SizedBox(height: 20),
-                  commonButton(
-                    text: AppString.saveMember,
-                    onPressed: () {
-                      controller.submitForm();
-                    },
-                  ),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: Commonwidget.commonLoader());
+                    }
+
+                    return commonButton(
+                      text: AppString.saveMember,
+                      onPressed: () {
+                        controller.submitForm(id: doctorId);
+                      },
+                    );
+                  }),
                 ],
               ),
             ),

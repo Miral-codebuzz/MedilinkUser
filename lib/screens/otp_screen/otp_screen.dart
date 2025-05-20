@@ -1,4 +1,4 @@
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -11,15 +11,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class OtpScreen extends StatelessWidget {
-  final String mobileNo;
-  final String countryCode;
-  OtpScreen({super.key, required this.mobileNo, required this.countryCode});
+  final String email;
+
+  OtpScreen({super.key, required this.email});
   final OtpController controller = Get.put(OtpController());
 
   @override
   Widget build(BuildContext context) {
-    controller.countryCode.value = countryCode;
-    controller.mobileNumber.value = mobileNo;
+    controller.email.value = email;
     controller.otp.value = '';
     return Scaffold(
       backgroundColor: AppColor.white,
@@ -50,7 +49,7 @@ class OtpScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                "${countryCode.isNotEmpty ? countryCode : ''} ${mobileNo.isNotEmpty ? mobileNo : ''} ${AppString.mobileNo}",
+                email,
                 textAlign: TextAlign.center,
                 style: TextStyleDecoration.labelSmall.copyWith(
                   fontSize: 14.sp,

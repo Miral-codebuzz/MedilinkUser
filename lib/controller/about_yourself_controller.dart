@@ -1,5 +1,5 @@
 import 'package:doc_o_doctor/Model/loginModel.dart';
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/settings.dart';
 import 'package:doc_o_doctor/screens/medical_condition_screen/medical_condition_screen.dart';
@@ -33,11 +33,14 @@ class AboutYourselfController extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
+  var countryCode = "+91".obs;
+
   final nameController = TextEditingController();
   final ageController = TextEditingController();
   final streetAddress = TextEditingController();
   final cityController = TextEditingController();
   final countryController = TextEditingController();
+  final mobileNumberController = TextEditingController();
   final dobController = TextEditingController();
   var dob = ''.obs;
 
@@ -61,6 +64,27 @@ class AboutYourselfController extends GetxController {
   }
 
   Future<void> selectDate(BuildContext context) async {
+    final DateTime today = DateTime.now();
+    final DateTime lastSelectableDate = DateTime(
+      today.year - 23,
+      today.month,
+      today.day,
+    );
+
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: lastSelectableDate,
+      firstDate: DateTime(1900),
+      lastDate: lastSelectableDate,
+    );
+
+    if (picked != null) {
+      dobController.text = DateFormat('dd/MM/yyyy').format(picked);
+      dob.value = dobController.text;
+    }
+  }
+
+  Future<void> selectDateTwo(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -89,16 +113,19 @@ class AboutYourselfController extends GetxController {
       tellAboutSelfRequest.city = cityController.text;
       tellAboutSelfRequest.country = countryController.text;
       tellAboutSelfRequest.dateOfBirth = dob.value;
+      tellAboutSelfRequest.age = ageController.text;
+      tellAboutSelfRequest.mobileNumber =
+          "${countryCode.value} ${mobileNumberController.text}";
 
       var result = await service.tellAboutSelf(tellAboutSelfRequest);
 
       if (result.status ?? false) {
-        isLoading.value = false;
         Commonwidget.showSuccessSnackbar(
           message: result.message ?? ServiceConfiguration.commonErrorMessage,
         );
         Settings.step = "1";
         Get.off(() => MedicalConditionScreen());
+        isLoading.value = false;
       } else {
         isLoading.value = false;
         Commonwidget.showErrorSnackbar(

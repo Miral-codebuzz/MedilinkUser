@@ -1,4 +1,4 @@
-import 'package:doc_o_doctor/constants/%20commonwidget.dart';
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -174,28 +174,33 @@ class MedicalConditionScreen extends StatelessWidget {
                       return Center(child: Commonwidget.commonLoader());
                     }
 
-                    return commonButton(
-                      text: AppString.next,
-                      onPressed: () {
-                        controller.uploadMedicalCondition(context);
-                      },
+                    return Column(
+                      children: [
+                        commonButton(
+                          text: AppString.next,
+                          onPressed: () {
+                            controller.uploadMedicalCondition(context);
+                          },
+                        ),
+                        // SizedBox(height: 10.h),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     controller.skipForNow();
+                        //   },
+                        //   child: Text(
+                        //     "Skip For Now ",
+                        //     style: TextStyleDecoration.labelSmall.copyWith(
+                        //       fontSize: 16.sp,
+                        //       color: AppColor.primaryColor,
+                        //       fontWeight: FontWeight.w500,
+                        //       decoration: TextDecoration.underline,
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
                     );
                   }),
-                  SizedBox(height: 10.h),
-                  GestureDetector(
-                    onTap: () {
-                      // Get.offAll(BottomNavBar());
-                    },
-                    child: Text(
-                      "Skip For Now ",
-                      style: TextStyleDecoration.labelSmall.copyWith(
-                        fontSize: 16.sp,
-                        color: AppColor.primaryColor,
-                        fontWeight: FontWeight.w500,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
+
                   SizedBox(height: 20.h),
                 ],
               ),
@@ -318,14 +323,13 @@ Widget customSelectedItem({
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         child: Row(
           children: [
-            CustomText(
-              text: fileName,
-              textColor: AppColor.black,
-              fontSize: 12.sp,
-              maxLine: 1,
-              height: 1.2,
-
-              fontWeight: FontWeight.w400,
+            Expanded(
+              child: Commonwidget.commonText(
+                text: fileName,
+                fontSize: 12.sp,
+                maxLines: 1,
+                fontWeight: FontWeight.w400,
+              ),
             ),
             SizedBox(width: 3),
             GestureDetector(

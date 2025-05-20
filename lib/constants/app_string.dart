@@ -4,10 +4,12 @@ class AppConst {
 
 class AppString {
   static const String docO = "Doc O";
-  static const String mobileNumber = "Mobile Number";
+  static const String patientProblem = "Patient Problem";
+  static const String enterEmail = "Enter Email";
+  static const String mobileNumber = "Email";
   static const String pleaseEnterMobileNo =
-      "Please enter you mobile number for\nfurther processed";
-  static const String enterMobileNo = "Enter Mobile Number";
+      "Please enter you email for\nfurther processed";
+  static const String enterMobileNo = "Enter Email";
   static const String continues = "Continue";
   static const String orContinueWith = "or continue with";
   static const String signInWithGoogle = "Sign in With Google";
@@ -15,7 +17,7 @@ class AppString {
   static const String continueAsAGuest = "Continue as a guest";
   static const String otpVerification = "OTP Verification";
   static const String wewillSendAnOTPTo = "We will send an OTP to";
-  static const String mobileNo = "mobile number";
+  static const String mobileNo = "email";
   static const String submit = "Submit";
   static const String saveMember = "Save Member";
   static const String otpResendIn = "OTP Resend in  ";
@@ -82,6 +84,7 @@ class AppString {
   static const String appiontments = "Appiontments";
   static const String describeYourMedicalProblem =
       "Describe Your Medical Problem";
+
   static const String clickToUpload = "Click to upload";
   static const String insurance2 = " Insurance";
   static const String haveYouAnyPastMedicalReport =

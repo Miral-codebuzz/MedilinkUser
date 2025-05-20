@@ -23,7 +23,7 @@ class ThankYouScreen extends StatelessWidget {
         child: commonButton(
           text: AppString.returnHome,
           onPressed: () {
-            Get.to(() => BottomNavBar());
+            Get.offAll(() => BottomNavBar());
           },
         ),
       ),

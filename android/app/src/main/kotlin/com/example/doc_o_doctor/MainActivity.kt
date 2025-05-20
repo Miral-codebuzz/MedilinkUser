@@ -1,4 +1,4 @@
-package com.example.doc_o_doctor
+package com.medilink.user
 
 import io.flutter.embedding.android.FlutterActivity
 

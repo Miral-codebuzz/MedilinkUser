@@ -27,6 +27,7 @@ class DoctorListResponseModel {
 
 class DoctorList {
   int? id;
+  String? email;
   String? mobileNumber;
   String? name;
   String? gender;
@@ -39,16 +40,19 @@ class DoctorList {
   String? dateOfBirth;
   String? image;
   String? accountType;
+  String? aboutDoctor;
   String? status;
   String? step;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? averageRating;
+  String? totalPatients;
 
   DoctorList({
     this.id,
+    this.email,
     this.mobileNumber,
     this.name,
-
     this.gender,
     this.address,
     this.city,
@@ -59,14 +63,18 @@ class DoctorList {
     this.dateOfBirth,
     this.image,
     this.accountType,
+    this.aboutDoctor,
     this.status,
     this.step,
     this.createdAt,
     this.updatedAt,
+    this.averageRating,
+    this.totalPatients,
   });
 
   factory DoctorList.fromJson(Map<String, dynamic> json) => DoctorList(
     id: json["id"],
+    email: json["email"],
     mobileNumber: json["mobileNumber"],
     name: json["name"],
     gender: json["gender"],
@@ -79,16 +87,20 @@ class DoctorList {
     dateOfBirth: json["dateOfBirth"],
     image: json["image"],
     accountType: json["accountType"],
+    aboutDoctor: json["aboutDoctor"],
     status: json["status"],
     step: json["step"],
     createdAt:
         json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
         json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    averageRating: json["averageRating"],
+    totalPatients: json["totalPatients"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "email": email,
     "mobileNumber": mobileNumber,
     "name": name,
     "gender": gender,
@@ -101,17 +113,20 @@ class DoctorList {
     "dateOfBirth": dateOfBirth,
     "image": image,
     "accountType": accountType,
+    "aboutDoctor": aboutDoctor,
     "status": status,
     "step": step,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
+    "averageRating": averageRating,
+    "totalPatients": totalPatients,
   };
 }
 
 class DoctorDetailResponseModel {
   bool? status;
   String? message;
-  DoctorDetail? data;
+  List<DoctorDetail>? data;
 
   DoctorDetailResponseModel({this.status, this.message, this.data});
 
@@ -119,94 +134,112 @@ class DoctorDetailResponseModel {
       DoctorDetailResponseModel(
         status: json["status"],
         message: json["message"],
-        data: json["data"] == null ? null : DoctorDetail.fromJson(json["data"]),
+        data:
+            json["data"] == null
+                ? []
+                : List<DoctorDetail>.from(
+                  json["data"]!.map((x) => DoctorDetail.fromJson(x)),
+                ),
       );
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "message": message,
-    "data": data?.toJson(),
+    "data":
+        data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
 class DoctorDetail {
   int? id;
+  String? email;
   String? mobileNumber;
   String? name;
   String? gender;
+  String? dateOfBirth;
   String? address;
   String? city;
   String? country;
-  String? jobTitle;
-  String? experience;
-  String? services;
-  String? dateOfBirth;
+  String? aboutDoctor;
   String? image;
-  String? accountType;
   String? status;
+  String? experience;
+  String? jobTitle;
+  String? services;
   String? step;
   DateTime? createdAt;
   DateTime? updatedAt;
+  dynamic averageRating;
+  String? totalPatients;
 
   DoctorDetail({
     this.id,
+    this.email,
     this.mobileNumber,
     this.name,
     this.gender,
+    this.dateOfBirth,
     this.address,
     this.city,
     this.country,
-    this.jobTitle,
-    this.experience,
-    this.services,
-    this.dateOfBirth,
+    this.aboutDoctor,
     this.image,
-    this.accountType,
     this.status,
+    this.experience,
+    this.jobTitle,
+    this.services,
     this.step,
     this.createdAt,
     this.updatedAt,
+    this.averageRating,
+    this.totalPatients,
   });
 
   factory DoctorDetail.fromJson(Map<String, dynamic> json) => DoctorDetail(
     id: json["id"],
+    email: json["email"],
     mobileNumber: json["mobileNumber"],
     name: json["name"],
     gender: json["gender"],
+    dateOfBirth: json["dateOfBirth"],
     address: json["address"],
     city: json["city"],
     country: json["country"],
-    jobTitle: json["jobTitle"],
-    experience: json["experience"],
-    services: json["services"],
-    dateOfBirth: json["dateOfBirth"],
+    aboutDoctor: json["aboutDoctor"],
     image: json["image"],
-    accountType: json["accountType"],
     status: json["status"],
+    experience: json["experience"],
+    jobTitle: json["jobTitle"],
+    services: json["services"],
     step: json["step"],
     createdAt:
         json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
         json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+    averageRating: json["averageRating"],
+    totalPatients: json["totalPatients"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "email": email,
     "mobileNumber": mobileNumber,
     "name": name,
     "gender": gender,
+    "dateOfBirth": dateOfBirth,
     "address": address,
     "city": city,
     "country": country,
-    "jobTitle": jobTitle,
-    "experience": experience,
-    "services": services,
-    "dateOfBirth": dateOfBirth,
+    "aboutDoctor": aboutDoctor,
     "image": image,
-    "accountType": accountType,
     "status": status,
+    "experience": experience,
+    "jobTitle": jobTitle,
+    "services": services,
     "step": step,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
+    "averageRating": averageRating,
+    "totalPatients": totalPatients,
   };
 }

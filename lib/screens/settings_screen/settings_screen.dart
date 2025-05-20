@@ -1,11 +1,16 @@
+import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
-import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
+import 'package:doc_o_doctor/constants/settings.dart';
+import 'package:doc_o_doctor/controller/bottom_bar_controller.dart';
+import 'package:doc_o_doctor/screens/EditDocumentsScreen/editDocumentsScreen.dart';
+import 'package:doc_o_doctor/screens/add_family_member_screen/familyMember.dart';
 import 'package:doc_o_doctor/screens/booking_screen/booking_screen.dart';
 import 'package:doc_o_doctor/screens/edit_profile_screen/edit_profile_screen.dart';
+import 'package:doc_o_doctor/screens/familyDoctor/family_Doctor.dart';
 import 'package:doc_o_doctor/screens/help_and_support_screen/help_and_support_screen.dart';
-import 'package:doc_o_doctor/screens/login_screen/login_screen.dart';
+import 'package:doc_o_doctor/screens/history/history.dart';
 import 'package:doc_o_doctor/screens/terms_and_condition_screen/terms_and_condition_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
@@ -19,91 +24,137 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BottomNavBarController bottomNavBarController = Get.put(
+      BottomNavBarController(),
+    );
     return Scaffold(
       backgroundColor: AppColor.white,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              appBarWidget(title: AppString.setting, showBackIcon: false),
-              SizedBox(height: 30),
-              Container(
-                height: 90.h,
-                width: 90.w,
-                decoration: BoxDecoration(
-                  color: AppColor.purpleColor,
-                  borderRadius: BorderRadius.circular(26),
-                  image: DecorationImage(
-                    image: AssetImage(AppImage.picImage),
-                    fit: BoxFit.fill,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                appBarWidget(title: AppString.setting, showBackIcon: false),
+                SizedBox(height: 30),
+                Container(
+                  height: 90.h,
+                  width: 90.w,
+                  decoration: BoxDecoration(
+                    color: AppColor.purpleColor,
+                    borderRadius: BorderRadius.circular(26),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(26),
+                    child: FadeInImage.assetNetwork(
+                      placeholder: AppImage.logoWhite,
+                      image:
+                          bottomNavBarController.profileDetail.value?.image ??
+                          "",
+                      fit: BoxFit.cover,
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          AppImage.profileIcon,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-              CustomText(
-                text: 'Nora Osborn',
-                fontWeight: FontWeight.w500,
-                fontSize: 20,
-              ),
-              SizedBox(height: 5),
-              CustomText(
-                text: '+91 9585638563',
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-                textColor: AppColor.textGrey.withValues(alpha: 0.8),
-              ),
-              SizedBox(height: 20),
-              CustomListStileWidget(
-                title: AppString.editProfile,
-                prefixIcon: AppImage.profileIcon,
-                onTap: () {
-                  Get.to(() => EditProfileScreen());
-                },
-              ),
-              CustomListStileWidget(
-                title: AppString.addFamilyMembers,
-                prefixIcon: AppImage.patientsIcon,
-                onTap: () {
-                  Get.to(() => AddFamilyMemberScreen());
-                },
-              ),
-              CustomListStileWidget(
-                title: AppString.myBookings,
-                prefixIcon: AppImage.bookingIcon,
-                onTap: () {
-                  Get.to(() => BookingScreen(isShowBackIcon: true));
-                },
-              ),
-              CustomListStileWidget(
-                title: AppString.helpAndSupport,
-                prefixIcon: AppImage.helpAndSupportIcon,
-                onTap: () {
-                  Get.to(() => HelpAndSupportScreen());
-                },
-              ),
-              CustomListStileWidget(
-                title: AppString.termsAndCondition,
-                prefixIcon: AppImage.termsAndConditionIcon,
-                onTap: () {
-                  Get.to(() => TermsAndConditionScreen());
-                },
-              ),
-              CustomListStileWidget(
-                title: AppString.logOut,
-                prefixIcon: AppImage.logOutIcon,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return logOutModelBottomSheet();
-                    },
-                  );
-                },
-                showSufixIcon: false,
-                iconAndTextColor: AppColor.primaryColor,
-              ),
-            ],
+                SizedBox(height: 10),
+                CustomText(
+                  text:
+                      bottomNavBarController.profileDetail.value?.name ??
+                      'Nora Osborn',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+                SizedBox(height: 5),
+                CustomText(
+                  text:
+                      bottomNavBarController
+                          .profileDetail
+                          .value
+                          ?.mobileNumber ??
+                      '+91 9585638563',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  textColor: AppColor.textGrey.withValues(alpha: 0.8),
+                ),
+                SizedBox(height: 20),
+                CustomListStileWidget(
+                  title: AppString.editProfile,
+                  prefixIcon: AppImage.profileIcon,
+                  onTap: () {
+                    Get.to(() => EditProfileScreen());
+                  },
+                ),
+                CustomListStileWidget(
+                  title: "Edit Documents",
+                  prefixIcon: AppImage.document,
+                  onTap: () {
+                    Get.to(() => EditDocumentsScreen());
+                  },
+                ),
+
+                CustomListStileWidget(
+                  title: AppString.addFamilyMembers,
+                  prefixIcon: AppImage.patientsIcon,
+                  onTap: () {
+                    Get.to(() => FamilyMember());
+                  },
+                ),
+                CustomListStileWidget(
+                  title: AppString.myBookings,
+                  prefixIcon: AppImage.bookingIcon,
+                  onTap: () {
+                    Get.to(() => BookingScreen(isShowBackIcon: true));
+                  },
+                ),
+                CustomListStileWidget(
+                  title: "History",
+                  prefixIcon: AppImage.history,
+                  onTap: () {
+                    Get.to(() => HistoryScreen(isShowBackIcon: true));
+                  },
+                ),
+                CustomListStileWidget(
+                  title: "Family Doctor",
+                  prefixIcon: AppImage.fDoctor,
+                  onTap: () {
+                    Get.to(() => FamilyDoctorScreen());
+                  },
+                ),
+                CustomListStileWidget(
+                  title: AppString.helpAndSupport,
+                  prefixIcon: AppImage.helpAndSupportIcon,
+                  onTap: () {
+                    Get.to(() => HelpAndSupportScreen());
+                  },
+                ),
+                CustomListStileWidget(
+                  title: AppString.termsAndCondition,
+                  prefixIcon: AppImage.termsAndConditionIcon,
+                  onTap: () {
+                    Get.to(() => TermsAndConditionScreen());
+                  },
+                ),
+                CustomListStileWidget(
+                  title: AppString.logOut,
+                  prefixIcon: AppImage.logOutIcon,
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return logOutModelBottomSheet();
+                      },
+                    );
+                  },
+                  showSufixIcon: false,
+                  iconAndTextColor: AppColor.primaryColor,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -171,10 +222,14 @@ class CustomListStileWidget extends StatelessWidget {
 }
 
 Widget logOutModelBottomSheet() {
+  final BottomNavBarController bottomNavBarController = Get.put(
+    BottomNavBarController(),
+  );
   return Container(
     height: 258,
     margin: EdgeInsets.all(5),
     decoration: BoxDecoration(
+      color: Colors.white,
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(8),
         topRight: Radius.circular(8),
@@ -198,12 +253,17 @@ Widget logOutModelBottomSheet() {
           height: 58.h,
           width: 58.h,
           decoration: BoxDecoration(
-            color: AppColor.pink,
+            color: AppColor.primaryColorO,
             borderRadius: BorderRadius.circular(11),
-            border: Border.all(color: AppColor.purpleColor),
+            border: Border.all(color: AppColor.primaryColor),
           ),
           alignment: Alignment.center,
-          child: Image.asset(AppImage.logOutIcon, height: 44.h, width: 44.h),
+          child: Image.asset(
+            AppImage.logOutIcon,
+            color: AppColor.primaryColor,
+            height: 44.h,
+            width: 44.h,
+          ),
         ),
         SizedBox(height: 10),
         CustomText(
@@ -221,29 +281,36 @@ Widget logOutModelBottomSheet() {
           fontWeight: FontWeight.w400,
         ),
         SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            commonButton(
-              text: AppString.logOut,
+        Obx(() {
+          if (bottomNavBarController.isLogout.value) {
+            return Center(child: Commonwidget.commonLoader());
+          }
 
-              onPressed: () {
-                Get.offAll(LoginScreen());
-              },
-              width: 126.w,
-            ),
-            SizedBox(width: 15),
-            commonButton(
-              text: AppString.cancel,
-              onPressed: () {
-                Get.back();
-              },
-              width: 126.w,
-              bgColor: AppColor.lightGrey,
-              textColor: AppColor.textGrey,
-            ),
-          ],
-        ),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              commonButton(
+                text: AppString.logOut,
+
+                onPressed: () {
+                  Settings.clear();
+                  bottomNavBarController.logout();
+                },
+                width: 126.w,
+              ),
+              SizedBox(width: 15),
+              commonButton(
+                text: AppString.cancel,
+                onPressed: () {
+                  Get.back();
+                },
+                width: 126.w,
+                bgColor: AppColor.lightGrey,
+                textColor: AppColor.textGrey,
+              ),
+            ],
+          );
+        }),
         SizedBox(height: 10),
       ],
     ),
