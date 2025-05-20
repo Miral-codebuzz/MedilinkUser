@@ -1,4 +1,5 @@
-// ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -37,8 +35,9 @@ class HelpAndSupportScreen extends StatelessWidget {
                     controller: controller.nameController,
                     label: AppString.name,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return "Name is required";
+                      }
                       return null;
                     },
                   ),
@@ -206,8 +205,9 @@ class HelpAndSupportScreen extends StatelessWidget {
                     label: AppString.writeYourProblemHere,
                     maxLine: 10,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return "This field is required";
+                      }
                       return null;
                     },
                   ),

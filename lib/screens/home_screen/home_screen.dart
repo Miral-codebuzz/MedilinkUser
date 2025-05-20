@@ -3,7 +3,6 @@ import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
 import 'package:doc_o_doctor/controller/bottom_bar_controller.dart';
-import 'package:doc_o_doctor/main.dart';
 import 'package:doc_o_doctor/screens/Search/search.dart';
 import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
 import 'package:doc_o_doctor/screens/edit_profile_screen/edit_profile_screen.dart';

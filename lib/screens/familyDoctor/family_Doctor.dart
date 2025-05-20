@@ -1,12 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/controller/add_family_member_controller.dart';
-import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
-import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
-import 'package:doc_o_doctor/widgets/common_button.dart';
 import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

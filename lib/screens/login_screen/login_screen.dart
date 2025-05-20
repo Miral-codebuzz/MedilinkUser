@@ -1,18 +1,13 @@
-import 'dart:developer';
-
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/controller/login_controller.dart';
 import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:doc_o_doctor/screens/home_screen/home_screen.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
-import 'package:doc_o_doctor/widgets/common_textfield.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../constants/app_color.dart';
 import '../../constants/text_style_decoration.dart';

@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:doc_o_doctor/Model/loginModel.dart';
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/settings.dart';
-import 'package:doc_o_doctor/controller/bottom_bar_controller.dart';
 import 'package:doc_o_doctor/screens/EditDocumentsScreen/documentsController.dart';
 import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:doc_o_doctor/service/rest_services.dart';
@@ -10,10 +8,10 @@ import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
 
 class AddDocController extends GetxController {
@@ -31,11 +29,6 @@ class AddDocController extends GetxController {
   final Documentscontroller documentscontroller = Get.put(
     Documentscontroller(),
   );
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void dispose() {
@@ -79,7 +72,7 @@ class AddDocController extends GetxController {
         }
       }
     } catch (e) {
-      print("Error picking medical PDFs: $e");
+      debugPrint("Error picking medical PDFs: $e");
     }
   }
 
@@ -109,7 +102,7 @@ class AddDocController extends GetxController {
         }
       }
     } catch (e) {
-      print("Error picking report PDFs: $e");
+      debugPrint("Error picking report PDFs: $e");
     }
   }
 
@@ -165,7 +158,7 @@ class AddDocController extends GetxController {
         path: ServiceConfiguration.medicalCondition,
         method: "POST",
         fields: {
-          "medicalProblem": medicalProblemController.text ?? null,
+          "medicalProblem": medicalProblemController.text,
           "sendNotification": false,
         },
         files: allFiles,
@@ -184,7 +177,7 @@ class AddDocController extends GetxController {
         );
       }
     } catch (e) {
-      print("Upload exception: $e");
+      debugPrint("Upload exception: $e");
       Commonwidget.showErrorSnackbar(message: "Something went wrong.");
     } finally {
       isLoading.value = false;

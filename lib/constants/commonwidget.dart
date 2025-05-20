@@ -1,9 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 
 class Commonwidget {
   static void showSuccessSnackbar({

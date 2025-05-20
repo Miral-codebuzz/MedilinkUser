@@ -3,7 +3,6 @@ import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
-import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
 import 'package:doc_o_doctor/screens/book_appointment_screen/book_appointment_screen.dart';
 import 'package:doc_o_doctor/screens/doc_details_screen/docDetailsController.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';

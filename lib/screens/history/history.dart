@@ -1,13 +1,9 @@
-import 'dart:isolate';
+// ignore_for_file: deprecated_member_use
 
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
-import 'package:doc_o_doctor/screens/EditDocumentsScreen/editcontroller.dart';
-import 'package:doc_o_doctor/screens/booking_screen/bookingController.dart';
-import 'package:doc_o_doctor/screens/booking_screen/details_screen.dart';
-import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
 import 'package:doc_o_doctor/screens/history/historyController.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
@@ -87,6 +83,7 @@ class HistoryScreen extends StatelessWidget {
 
   void showSortFilterBottomSheet(BuildContext context) {
     final Historycontroller controller = Get.put(Historycontroller());
+    // ignore: no_leading_underscores_for_local_identifiers
     double _rating = 0.0;
 
     showModalBottomSheet(

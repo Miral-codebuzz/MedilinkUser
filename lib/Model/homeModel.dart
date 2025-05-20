@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class DoctorListResponseModel {
   bool? status;
   String? message;

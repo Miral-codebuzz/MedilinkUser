@@ -106,9 +106,7 @@ class EditProfileController extends GetxController {
     );
     if (pickedFile != null) {
       pickedImage.value = File(pickedFile.path);
-    } else {
-      print('No image selected.');
-    }
+    } else {}
   }
 
   var service = Get.find<RestService>();
@@ -158,7 +156,6 @@ class EditProfileController extends GetxController {
         );
       }
     } catch (e) {
-      print("Upload exception: $e");
       Commonwidget.showErrorSnackbar(message: "Something went wrong.");
     } finally {
       isLoading.value = false;

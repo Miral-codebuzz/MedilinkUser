@@ -68,8 +68,6 @@ class OtpController extends GetxController {
       var result = await service.otpVerifier(otpVerifierRequestModel);
 
       if (result.status ?? false) {
-        print(result.data?.authentication?.accessToken);
-        print(result.data?.authentication?.refreshToken);
         isLoading.value = false;
         Commonwidget.showSuccessSnackbar(
           message: result.message ?? ServiceConfiguration.commonErrorMessage,
@@ -78,10 +76,6 @@ class OtpController extends GetxController {
         Settings.isUserLoggedIn = true;
         Settings.step = result.data!.step ?? "0";
         Settings.accessToken = result.data!.authentication?.accessToken ?? "";
-
-        print(Settings.step);
-        print(Settings.accessToken);
-        print(Settings.isUserLoggedIn);
 
         final fcmToken = notificationcontroller.token.value;
 

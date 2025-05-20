@@ -160,8 +160,7 @@ class DetailsScreen extends StatelessWidget {
                     //     ?
                     DetailsWidget(
                       dateAndTime:
-                          "${controller.bookingDatail.value?.availableTime}  ${controller.bookingDatail.value?.date}" ??
-                          '',
+                          "${controller.bookingDatail.value?.availableTime}  ${controller.bookingDatail.value?.date}",
                       age: controller.bookingDatail.value?.age ?? '',
                       mobileNumber:
                           controller.bookingDatail.value?.number ?? '',
