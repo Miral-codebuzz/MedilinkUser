@@ -25,6 +25,7 @@ class BottomNavBar extends StatelessWidget {
     ];
 
     // Function to build navigation bar items with dynamic color change
+    // ignore: no_leading_underscores_for_local_identifiers
     BottomNavigationBarItem _buildNavItem({
       required String imagePath,
       required String label,

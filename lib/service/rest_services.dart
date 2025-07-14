@@ -8,7 +8,6 @@ import 'package:doc_o_doctor/Model/homeModel.dart';
 import 'package:doc_o_doctor/Model/loginModel.dart';
 import 'package:doc_o_doctor/Model/profileModel.dart';
 import 'package:doc_o_doctor/constants/settings.dart';
-import 'package:doc_o_doctor/screens/add_family_member_screen/add_family_member_screen.dart';
 import 'package:doc_o_doctor/screens/login_screen/login_screen.dart';
 import 'package:doc_o_doctor/service/service_configuration.dart';
 import 'package:flutter/foundation.dart';
@@ -345,7 +344,6 @@ class RestService {
   Future<BookAppoinmentReponerseedModel> bookAppoinment(
     BookAppoinmentRequestdModel value,
   ) async {
-    print(jsonEncode(value));
     BookAppoinmentReponerseedModel result = BookAppoinmentReponerseedModel();
     try {
       var response = await getResponse(

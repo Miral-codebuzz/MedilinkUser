@@ -1,4 +1,4 @@
-import 'dart:isolate';
+// ignore_for_file: deprecated_member_use
 
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
@@ -46,6 +46,7 @@ class BookingScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: controller.bookingList.length,
                     itemBuilder: (context, index) {
+                      // ignore: invalid_use_of_protected_member
                       final doctor = controller.bookingList.value[index];
                       return CustomAppoinmentContainer(
                         image: doctor.image ?? "",

@@ -43,7 +43,6 @@ class BookAppointmentController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     scrollToSelectedDate();
     super.onInit();
   }
@@ -266,6 +265,7 @@ class BookAppointmentController extends GetxController {
               : "other";
       bookAppoinmentRequestdModel.availableTime = selectTime.value;
       bookAppoinmentRequestdModel.age =
+          // ignore: unnecessary_null_in_if_null_operators
           int.tryParse(ageController.text) ?? null;
       bookAppoinmentRequestdModel.memberId = memberId.value;
       bookAppoinmentRequestdModel.number =

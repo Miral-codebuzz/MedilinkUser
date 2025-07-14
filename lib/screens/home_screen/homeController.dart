@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:doc_o_doctor/Model/homeModel.dart';
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/service/rest_services.dart';

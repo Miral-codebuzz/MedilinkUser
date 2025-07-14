@@ -39,7 +39,6 @@ class HelpAndSupportController extends GetxController {
         Commonwidget.showErrorSnackbar(message: "Please enter a mobile number");
         return;
       }
-      print("Form is valid");
       // Get.back();
       helpAndSupport();
     }

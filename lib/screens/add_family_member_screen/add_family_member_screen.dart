@@ -63,8 +63,9 @@ class AddFamilyMemberScreen extends StatelessWidget {
                     controller: controller.nameController,
                     label: AppString.name,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return "Name is required";
+                      }
                       return null;
                     },
                   ),

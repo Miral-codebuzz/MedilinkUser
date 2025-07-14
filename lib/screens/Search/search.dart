@@ -1,7 +1,6 @@
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
-import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/screens/Search/searchController.dart';
 import 'package:doc_o_doctor/screens/doc_details_screen/doc_details_screen.dart';
 import 'package:doc_o_doctor/widgets/app_bar_widget.dart';

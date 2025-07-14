@@ -23,6 +23,7 @@ class Docdetailscontroller extends GetxController {
       var result = await service.getDoctorDetail(doctorId: doctorId.value);
 
       if (result.status ?? false) {
+        // ignore: unnecessary_null_in_if_null_operators
         doctorDetail.value = result.data?.first ?? null;
         isLoading.value = false;
       } else {

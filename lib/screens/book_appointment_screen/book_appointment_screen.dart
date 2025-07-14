@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
@@ -29,7 +31,7 @@ class BookAppointmentScreen extends StatelessWidget {
       AddFamilyMemberController(),
     );
     addFamilyMemberController.getMemberList();
-    controller.doctorId.value = id ?? 0;
+    controller.doctorId.value = id;
     controller.userAbout();
     return Scaffold(
       backgroundColor: AppColor.white,

@@ -3,10 +3,7 @@ import 'package:doc_o_doctor/constants/app_color.dart';
 import 'package:doc_o_doctor/constants/app_images.dart';
 import 'package:doc_o_doctor/constants/app_string.dart';
 import 'package:doc_o_doctor/constants/text_style_decoration.dart';
-import 'package:doc_o_doctor/screens/bottom_nav_bar/bottom_nav_bar.dart';
-import 'package:doc_o_doctor/screens/home_screen/home_screen.dart';
 import 'package:doc_o_doctor/widgets/common_button.dart';
-import 'package:doc_o_doctor/widgets/custom_text.dart';
 import 'package:doc_o_doctor/widgets/custom_textfield.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
@@ -164,6 +161,7 @@ class MedicalConditionScreen extends StatelessWidget {
                     maxLine: 5,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty)
+                        // ignore: curly_braces_in_flow_control_structures
                         return "Please Describe Your Medical Problem";
                       return null;
                     },

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:doc_o_doctor/Model/documentModel.dart';
 import 'package:doc_o_doctor/constants/commonwidget.dart';
 import 'package:doc_o_doctor/constants/app_color.dart';
@@ -24,7 +26,7 @@ class EditDocumentsScreen extends StatelessWidget {
     final Documentscontroller documentscontroller = Get.put(
       Documentscontroller(),
     );
-    final AddDocController controller = Get.put(AddDocController());
+    Get.put(AddDocController());
     documentscontroller.getDocument();
 
     return Scaffold(
